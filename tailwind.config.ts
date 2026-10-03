@@ -18,7 +18,7 @@ const config: Config = {
           hover: "#9370ff",
         },
         saffron: "#ffb829",
-        verdant: "#15846e",
+        teal: "#2bd4b4",
         ember: "#ff6b6b",
         line: {
           DEFAULT: "rgba(255, 255, 255, 0.10)",

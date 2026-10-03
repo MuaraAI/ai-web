@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildFlow, estuaryBand, seededRandom, smoothstep } from "../estuary";
+import { estuaryBand, seededRandom, smoothstep } from "../estuary";
 
 describe("estuary", () => {
   it("is all river at stage 0 and all sea at stage 1", () => {
@@ -14,16 +14,6 @@ describe("estuary", () => {
     const downstream = estuaryBand(0.95, 0.5);
     expect(upstream.half).toBeLessThan(downstream.half);
     expect(upstream.spread).toBeLessThan(downstream.spread);
-  });
-
-  it("builds a deterministic particle set", () => {
-    expect(buildFlow(40, 3)).toEqual(buildFlow(40, 3));
-    for (const p of buildFlow(200)) {
-      expect(p.lane).toBeGreaterThanOrEqual(-1);
-      expect(p.lane).toBeLessThanOrEqual(1);
-      expect(p.x).toBeGreaterThanOrEqual(0);
-      expect(p.x).toBeLessThan(1);
-    }
   });
 
   it("smoothstep and the generator stay in range", () => {

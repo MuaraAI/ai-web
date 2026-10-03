@@ -36,16 +36,17 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full bg-void">
       <div className="container-page flex h-20 items-center justify-between gap-6">
-        <Link href="/" className="flex items-center gap-4" aria-label="Muara AI, beranda">
+        <Link href="/" className="flex items-center" aria-label="Muara AI, beranda">
           <Logo />
-          <span className="hidden items-center gap-1.5 text-caption text-ash sm:inline-flex">
-            <span className="h-1.5 w-1.5 rounded-pill bg-verdant" />
-            Operational
-          </span>
         </Link>
 
         <nav aria-label="Utama" className="flex items-center gap-8">
           <div className="hidden items-center gap-8 md:flex">
+            {pathname !== "/" && (
+              <Link href="/" className={navLink}>
+                Beranda
+              </Link>
+            )}
             <Link href="/#models" className={navLink}>
               Model &amp; Limit
             </Link>

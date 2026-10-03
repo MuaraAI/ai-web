@@ -11,7 +11,7 @@ colors:
   iris: "#8052ff"
   iris-hover: "#9370ff"
   saffron: "#ffb829"
-  verdant: "#15846e"
+  teal: "#2bd4b4"  # river water in procedural visuals only
   ember: "#ff6b6b"
   line: "rgba(255, 255, 255, 0.10)"
   line-strong: "rgba(255, 255, 255, 0.16)"
@@ -70,13 +70,15 @@ Desain resmi portal komunitas Muara AI (`ai.muaraai.com`). Panggung gelap: kanva
 1. **Void adalah desainnya:** Semua section berlatar `#000000`. Tidak ada panel abu-abu, kartu berisi, bayangan, atau gradien pada komponen UI. Pemisah hanya garis tipis `line` (`rgba(255,255,255,0.10)`) bila benar-benar dibutuhkan (tabel, daftar).
 2. **Hierarki lewat skala, bukan ketebalan:** Judul selalu Inter 400 dengan tracking `-0.04em` pada ukuran besar. Body copy Inter **200** (ultra-light) 18px. Label & navigasi Inter 600, 14px, uppercase, tracking `0.025em`.
 3. **Satu aksi utama per tampilan:** Tombol semi-rounded `iris` (`.btn-primary`, radius 10px) hanya untuk aksi utama. Aksi sekunder memakai teks tanpa wadah (`.btn-ghost`, `.btn-quiet`). `iris` tidak dipakai sebagai latar blok besar.
-4. **Amber untuk penekanan:** `saffron` untuk eyebrow di atas judul, sorotan, dan tautan aksen. `ember` hanya untuk status error/pencabutan, `verdant` untuk indikator aktif.
-5. **Muara sebagai visual hero:** Citra hero adalah partikel segitiga yang mengalir dari sungai sempit (verdant/teal) lalu menyebar ke laut (iris/biru) di `<Estuary />`. Logo adalah delta Δ yang dibelah aliran sungai. Gradien hanya diizinkan di logo dan visual prosedural.
-6. **Perjalanan hulu → muara → laut saat scroll:** `<FlowField />` adalah tekstur garis arus tetap di latar yang berubah mengikuti scroll. Tiap halaman punya tahapnya sendiri: landing berjalan dari sungai ke laut (`from={0} to={1}`), login berada di muara (`0.45 → 0.6`), dashboard di laut tenang (`0.8 → 1`). `<JourneyRail />` menandai posisi pembaca di layar ≥1440px, dan `<Reveal />` memunculkan konten saat masuk viewport. Semua animasi berhenti saat tab tersembunyi dan menghormati `prefers-reduced-motion`.
-7. **Copyable Endpoints & Credentials:** Base URL dan kunci API dapat disalin dengan satu klik.
-8. **Self-hosted Fonts:** Inter (200/400/600), JetBrains Mono, dan Material Symbols Rounded dari `public/fonts`. Nol koneksi ke Google Fonts / CDN eksternal.
-9. **Zero Decorative Emojis:** Tidak ada emoji sebagai ikon, bullet, atau tombol.
-10. **Mobile Floor 360px & Aksesibilitas:** Tanpa scrollbar horizontal di 360px, target sentuh ≥ 44px, fokus terlihat (outline amber), kontras teks ≥ 4.5:1.
+4. **Amber untuk penekanan:** `saffron` untuk eyebrow di atas judul, sorotan, dan tautan aksen. `ember` hanya untuk status error/pencabutan. Tidak ada badge/titik status hijau; status ditulis sebagai teks.
+5. **Muara sebagai visual hero:** `<Estuary />` adalah peta muara: sungai berkelok dari **Hulu**, pecah menjadi kanal-kanal delta di titik **Muara** (penanda amber berdenyut), lalu gelombang bergulir ke **Laut**. Partikel segitiga mengalir di sepanjang sungai (teal) dan berubah ungu saat masuk laut. Logo adalah delta Δ yang dibelah aliran sungai. Gradien hanya diizinkan di logo dan visual prosedural.
+6. **Scene per section saat scroll:** `<FlowField />` adalah latar garis arus tetap. Setiap section memilih scene lewat `data-scene` (atau `<Reveal scene="…">`): `hero`, `river`, `rapids`, `mouth`, `sea`, `deep` (lihat `src/lib/scenes.ts`). Latar bertransisi halus di akhir tiap section, mengubah kemiringan, lebar kanal, tinggi ombak, kecepatan arus, dan warna (teal → ungu). Landing: hero → river → rapids → mouth → sea → deep. Login: mouth. Dashboard: sea/mouth/deep. `<JourneyRail />` menandai posisi pembaca di layar ≥1440px, dan `<Reveal />` memunculkan konten saat masuk viewport. Semua animasi berhenti saat tab tersembunyi dan menghormati `prefers-reduced-motion`.
+7. **Tipografi hidup:** judul hero memakai `<TypeCycle />`, kata amber yang diketik ulang (ide → riset → karya → kode) dengan caret ungu dan slot selebar kata terpanjang agar tidak reflow. Judul memakai `text-wrap: balance`, paragraf `pretty`.
+8. **Scrollbar kustom:** tipis, thumb abu transparan, ungu saat ditarik; Firefox memakai `scrollbar-color`.
+9. **Copyable Endpoints & Credentials:** Base URL dan kunci API dapat disalin dengan satu klik.
+10. **Self-hosted Fonts:** Inter (200/400/600), JetBrains Mono, dan Material Symbols Rounded dari `public/fonts`. Nol koneksi ke Google Fonts / CDN eksternal.
+11. **Zero Decorative Emojis:** Tidak ada emoji sebagai ikon, bullet, atau tombol.
+12. **Mobile Floor 360px & Aksesibilitas:** Tanpa scrollbar horizontal di 360px, target sentuh ≥ 44px, fokus terlihat (outline amber), kontras teks ≥ 4.5:1.
 
 ## Komponen Utilitas (`globals.css`)
 | Kelas | Peran |
@@ -89,3 +91,4 @@ Desain resmi portal komunitas Muara AI (`ai.muaraai.com`). Panggung gelap: kanva
 | `.field` | Input/select semi-rounded dengan garis tipis |
 | `.code-block` | Blok kode hitam bergaris tipis, radius 16px |
 | `.reveal` | Status awal/akhir animasi muncul saat scroll |
+| `.type-caret` | Caret ungu berkedip untuk `<TypeCycle />` |

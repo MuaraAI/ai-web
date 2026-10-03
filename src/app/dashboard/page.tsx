@@ -18,8 +18,8 @@ import { DB, getSupabase } from "@/lib/supabase";
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative isolate flex min-h-screen flex-col">
-      {/* Members work out at sea: wide, calm swell that deepens as they scroll. */}
-      <FlowField from={0.8} to={1} />
+      {/* Members work out at sea: calm swell, with a pass by the mouth at key creation. */}
+      <FlowField fallback="sea" />
       <Navbar />
       {children}
       <Footer />
@@ -179,11 +179,11 @@ export default function DashboardPage() {
             </div>
           </Reveal>
 
-          <Reveal>
+          <Reveal scene="sea">
             <QuotaBar />
           </Reveal>
 
-          <Reveal>
+          <Reveal scene="mouth">
             <GeneratePanel
               userId={guardState.member.id}
               hasActiveKey={Boolean(activeKey)}
@@ -193,11 +193,11 @@ export default function DashboardPage() {
             />
           </Reveal>
 
-          <Reveal>
+          <Reveal scene="sea">
             <KeyList keys={keys} loading={loadingKeys} onRefresh={fetchKeys} />
           </Reveal>
 
-          <Reveal>
+          <Reveal scene="deep">
             <CodeExamples />
           </Reveal>
         </div>

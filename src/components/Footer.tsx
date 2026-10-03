@@ -2,7 +2,7 @@ import { Logo } from "@/components/Logo";
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-line">
+    <footer data-scene="deep" className="w-full border-t border-line">
       <div className="container-page flex flex-col gap-15 pb-9 pt-15">
         <div className="grid grid-cols-1 gap-9 md:grid-cols-2">
           <div className="flex flex-col gap-4.5">

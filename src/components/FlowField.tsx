@@ -1,26 +1,19 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { clamp, estuaryBand, smoothstep } from "@/lib/estuary";
+import { estuaryBand } from "@/lib/estuary";
+import { SCENES, blendScenes, isSceneName, sceneAt, type Scene, type SceneName, type SceneSection } from "@/lib/scenes";
 
 const LINES = 22;
-const VERDANT = [43, 212, 180];
+const TEAL = [43, 212, 180];
 const IRIS = [128, 82, 255];
 
-interface FlowFieldProps {
-  /** Journey stage at the top of the page (0 = river, 1 = open sea). */
-  from: number;
-  /** Journey stage at the bottom of the page. */
-  to: number;
-  /** Keep the texture faint until the reader scrolls past the hero. */
-  quietTop?: boolean;
-}
-
 /**
- * Fixed background of current lines. Scrolling carries the reader downstream:
- * the lines bunch into a river, open through the estuary, and settle into sea swell.
+ * Fixed background of river currents. Every section marked `data-scene` sets the
+ * mood — narrow river, rapids, the mouth, open sea — and the field morphs
+ * smoothly between them as the reader scrolls.
  */
-export function FlowField({ from, to, quietTop = false }: FlowFieldProps) {
+export function FlowField({ fallback = "mouth" }: { fallback?: SceneName }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -32,16 +25,18 @@ export function FlowField({ from, to, quietTop = false }: FlowFieldProps) {
     let width = 0;
     let height = 0;
     let frame = 0;
-    let stage = from;
-    let target = from;
-    let presence = quietTop ? 0.2 : 1;
-    let targetPresence = presence;
+    let target: Scene = SCENES[fallback];
+    let current: Scene = target;
 
     const readScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = max > 0 ? clamp(window.scrollY / max, 0, 1) : 0;
-      target = from + (to - from) * progress;
-      targetPresence = quietTop ? 0.2 + 0.8 * smoothstep(0, window.innerHeight * 0.7, window.scrollY) : 1;
+      const sections: SceneSection[] = [];
+      document.querySelectorAll<HTMLElement>("[data-scene]").forEach((el) => {
+        const scene = el.dataset.scene;
+        if (!isSceneName(scene)) return;
+        const rect = el.getBoundingClientRect();
+        sections.push({ top: rect.top, height: rect.height, scene });
+      });
+      target = sceneAt(sections, window.innerHeight * 0.5, fallback);
     };
 
     const resize = () => {
@@ -55,47 +50,69 @@ export function FlowField({ from, to, quietTop = false }: FlowFieldProps) {
 
     const paint = (t: number) => {
       const time = reducedMotion ? 0 : t / 1000;
+      const sc = current;
       ctx.clearRect(0, 0, width, height);
-      const step = Math.max(12, width / 90);
+      ctx.save();
+      ctx.translate(width / 2, height / 2);
+      ctx.rotate(sc.tilt);
+      ctx.translate(-width / 2, -height / 2 + sc.offsetY * height);
+
+      const rgb = TEAL.map((c, k) => Math.round(c + (IRIS[k] - c) * sc.hue)).join(",");
+      // Draw a little wider than the screen so tilted lines never show their ends.
+      const span = width * 1.3;
+      const x0 = -width * 0.15;
+      const step = Math.max(12, span / 110);
 
       for (let i = 0; i < LINES; i++) {
         const lane = (i / (LINES - 1)) * 2 - 1;
-        let spreadSum = 0;
-        let samples = 0;
-
+        const core = 1 - 0.55 * Math.abs(lane);
         ctx.beginPath();
-        for (let x = -step; x <= width + step; x += step) {
-          const band = estuaryBand(x / width, stage, time);
-          spreadSum += band.spread;
-          samples++;
-          const swell = (0.003 + 0.014 * band.spread) * Math.sin((x / width) * Math.PI * (3 + (i % 3)) + time * 0.5 + i * 1.7);
-          const y = (band.center + lane * band.half + swell) * height;
-          if (x === -step) ctx.moveTo(x, y);
+        for (let x = x0; x <= x0 + span; x += step) {
+          const xn = (x - x0) / span;
+          const band = estuaryBand(xn, sc.stage, time);
+          const center = 0.5 + (band.center - 0.5) * sc.curl;
+          const swell =
+            (0.003 + 0.012 * band.spread) * sc.swell * Math.sin(xn * Math.PI * (3 + (i % 3)) * sc.freq + time * 0.5 * sc.speed + i * 1.7);
+          const y = (center + lane * band.half + swell) * height;
+          if (x === x0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
         }
 
-        const mix = spreadSum / samples;
-        const rgb = VERDANT.map((c, k) => Math.round(c + (IRIS[k] - c) * mix)).join(",");
-        const core = 1 - 0.55 * Math.abs(lane);
+        // Lines fade at both screen edges instead of being cut off.
+        const fadeEdges = (a: number) => {
+          const g = ctx.createLinearGradient(x0, 0, x0 + span, 0);
+          g.addColorStop(0, `rgba(${rgb},0)`);
+          g.addColorStop(0.25, `rgba(${rgb},${a})`);
+          g.addColorStop(0.75, `rgba(${rgb},${a})`);
+          g.addColorStop(1, `rgba(${rgb},0)`);
+          return g;
+        };
 
-        // Faint bed line…
         ctx.setLineDash([]);
-        ctx.strokeStyle = `rgba(${rgb},${0.07 * core * presence})`;
+        ctx.strokeStyle = fadeEdges(0.08 * core * sc.alpha);
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // …with a dashed current running downstream along it.
         ctx.setLineDash([2 + (i % 4), 18 + (i % 5) * 6]);
-        ctx.lineDashOffset = -time * (36 - 18 * mix) * (1 + (i % 3) * 0.25);
-        ctx.strokeStyle = `rgba(${rgb},${0.28 * core * presence})`;
+        ctx.lineDashOffset = -time * 30 * sc.speed * (1 + (i % 3) * 0.25);
+        ctx.strokeStyle = fadeEdges(0.32 * core * sc.alpha);
         ctx.lineWidth = 1.2;
         ctx.stroke();
       }
+      ctx.restore();
+    };
+
+    const ease = () => {
+      let moving = false;
+      const next = blendScenes(current, target, 0.06);
+      for (const key of Object.keys(next) as (keyof Scene)[]) {
+        if (Math.abs(next[key] - target[key]) > 0.0005) moving = true;
+      }
+      current = moving ? next : target;
     };
 
     const loop = (t: number) => {
-      stage += (target - stage) * 0.06;
-      presence += (targetPresence - presence) * 0.06;
+      ease();
       paint(t);
       if (!document.hidden) frame = requestAnimationFrame(loop);
     };
@@ -103,8 +120,7 @@ export function FlowField({ from, to, quietTop = false }: FlowFieldProps) {
     const onScroll = () => {
       readScroll();
       if (reducedMotion) {
-        stage = target;
-        presence = targetPresence;
+        current = target;
         paint(0);
       }
     };
@@ -124,8 +140,7 @@ export function FlowField({ from, to, quietTop = false }: FlowFieldProps) {
 
     resize();
     readScroll();
-    stage = target;
-    presence = targetPresence;
+    current = target;
     if (reducedMotion) paint(0);
     else frame = requestAnimationFrame(loop);
 
@@ -139,7 +154,14 @@ export function FlowField({ from, to, quietTop = false }: FlowFieldProps) {
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [from, to, quietTop]);
+  }, [fallback]);
 
-  return <canvas ref={canvasRef} aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 h-full w-full" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 -z-10 h-full w-full"
+      style={{ maskImage: "linear-gradient(to bottom, transparent 0, #000 96px)" }}
+    />
+  );
 }

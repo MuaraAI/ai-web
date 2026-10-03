@@ -1,12 +1,7 @@
 /**
- * Shared geometry for the "muara" visuals: a narrow meandering river that
- * widens through an estuary into open sea. Everything is normalized so the
- * hero particles and the scroll-driven background speak the same language.
+ * Shared math for the "muara" visuals: a narrow meandering river that widens
+ * through an estuary into open sea, used by the scroll-driven background.
  */
-
-export const RIVER_COLORS = ["#15846e", "#2bd4b4", "#2bd4b4", "#3d7bff"] as const;
-export const SEA_COLORS = ["#8052ff", "#8052ff", "#a98bff", "#3d7bff", "#ff4fa3"] as const;
-export const SPARK_COLOR = "#ffb829";
 
 export function clamp(v: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, v));
@@ -46,46 +41,4 @@ export function estuaryBand(xn: number, stage: number, time = 0): Band {
   const spread = smoothstep(mouth - 0.1, mouth + 0.45, xn);
   const meander = 0.09 * (1 - spread) * Math.sin(xn * Math.PI * 2.4 + time * 0.15);
   return { center: 0.5 + meander, half: 0.05 + 0.5 * spread, spread };
-}
-
-export interface FlowParticle {
-  /** Progress along the flow, 0..1 (wraps). */
-  x: number;
-  /** Lane across the channel, -1..1. */
-  lane: number;
-  size: number;
-  spin: number;
-  speed: number;
-  alpha: number;
-  phase: number;
-  riverColor: string;
-  seaColor: string;
-  /** Spread at which this particle switches to its sea color, so the hue shift feathers. */
-  turn: number;
-}
-
-export function buildFlow(count: number, seed = 11): FlowParticle[] {
-  const rnd = seededRandom(seed);
-  const pick = <T,>(list: readonly T[]) => list[Math.floor(rnd() * list.length)];
-  const particles: FlowParticle[] = [];
-
-  for (let i = 0; i < count; i++) {
-    // Bias lanes toward the thalweg so the river core reads denser than its banks.
-    const lane = (rnd() + rnd() + rnd()) / 1.5 - 1;
-    const spark = rnd() < 0.06;
-    particles.push({
-      x: rnd(),
-      lane,
-      size: 5 + rnd() * 6,
-      spin: rnd() * Math.PI * 2,
-      speed: 0.035 + rnd() * 0.05,
-      alpha: 0.55 + rnd() * 0.45,
-      phase: rnd() * Math.PI * 2,
-      riverColor: spark ? SPARK_COLOR : pick(RIVER_COLORS),
-      seaColor: spark ? SPARK_COLOR : pick(SEA_COLORS),
-      turn: 0.2 + rnd() * 0.6,
-    });
-  }
-
-  return particles;
 }
