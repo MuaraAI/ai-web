@@ -8,21 +8,22 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Theme-aware tokens: each resolves to a CSS variable set per theme in globals.css.
       colors: {
-        void: "#000000",
-        bone: "#ffffff",
-        ash: "#9a9a9a",
-        mist: "#bdbdbd",
+        void: "rgb(var(--c-void) / <alpha-value>)",
+        bone: "rgb(var(--c-bone) / <alpha-value>)",
+        ash: "rgb(var(--c-ash) / <alpha-value>)",
+        mist: "rgb(var(--c-mist) / <alpha-value>)",
         iris: {
           DEFAULT: "#8052ff",
           hover: "#9370ff",
         },
-        saffron: "#ffb829",
+        saffron: "rgb(var(--c-saffron) / <alpha-value>)",
         teal: "#2bd4b4",
-        ember: "#ff6b6b",
+        ember: "rgb(var(--c-ember) / <alpha-value>)",
         line: {
-          DEFAULT: "rgba(255, 255, 255, 0.10)",
-          strong: "rgba(255, 255, 255, 0.16)",
+          DEFAULT: "rgb(var(--c-bone) / 0.10)",
+          strong: "rgb(var(--c-bone) / 0.16)",
         },
       },
       fontFamily: {
