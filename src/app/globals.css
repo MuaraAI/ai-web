@@ -80,8 +80,27 @@
   font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 20;
 }
 
+/* Theme tokens as RGB channels so Tailwind can apply alpha. Dark is the default. */
 :root {
   color-scheme: dark;
+  --canvas: 7 7 11;
+  --ink: 255 255 255;
+  --muted: 154 154 160;
+  --soft: 196 196 204;
+  --saffron: 255 184 41;
+  --ember: 255 107 107;
+  --glow-opacity: 0.34;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --canvas: 250 250 252;
+  --ink: 14 14 20;
+  --muted: 98 98 110;
+  --soft: 64 64 74;
+  --saffron: 161 98 7;
+  --ember: 220 38 38;
+  --glow-opacity: 0.22;
 }
 
 html {
@@ -91,8 +110,11 @@ html {
 
 html,
 body {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: rgb(var(--canvas));
+  color: rgb(var(--ink));
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
   font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   font-feature-settings: "ss01" on;
   overflow-x: hidden;
@@ -110,11 +132,11 @@ p {
   text-wrap: pretty;
 }
 
-/* Scrollbar: a thin current on the void, violet while held */
+/* Scrollbar: thin and quiet, violet while held */
 @supports not selector(::-webkit-scrollbar) {
   html {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+    scrollbar-color: rgb(var(--ink) / 0.2) transparent;
   }
 }
 
@@ -129,14 +151,14 @@ p {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgb(var(--ink) / 0.16);
   border: 3px solid transparent;
   border-radius: 9999px;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.32);
+  background-color: rgb(var(--ink) / 0.32);
 }
 
 ::-webkit-scrollbar-thumb:active {
@@ -166,9 +188,28 @@ p {
 }
 
 *:focus-visible {
-  outline: 2px solid #ffb829;
+  outline: 2px solid rgb(var(--saffron));
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* Colored accent text (hero typewriter) — tuned per theme for contrast */
+.text-gradient {
+  background-image: linear-gradient(90deg, #2bd4b4, #8052ff 55%, #ff4fa3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+:root[data-theme="light"] .text-gradient {
+  background-image: linear-gradient(90deg, #0b8f78, #6a3df0 55%, #d61f7a);
+}
+
+/* Soft color fields behind the anime.js formations */
+.shape-glow {
+  opacity: var(--glow-opacity);
+  filter: blur(110px);
+  will-change: transform;
 }
 
 /* Scroll reveal — content rises out of the current as it enters the viewport */
@@ -213,28 +254,33 @@ p {
 
   /* Small uppercase field/column label */
   .label {
-    @apply text-caption font-semibold uppercase tracking-[0.025em] text-ash;
+    @apply text-caption font-semibold uppercase tracking-[0.025em] text-muted;
   }
 
   /* The single filled action per view */
   .btn-primary {
-    @apply inline-flex min-h-[46px] items-center justify-center gap-2.5 rounded-button bg-iris px-[22px] text-label font-semibold uppercase text-bone transition-colors duration-200 ease-out hover:bg-iris-hover disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-iris;
+    @apply inline-flex min-h-[46px] items-center justify-center gap-2.5 rounded-button bg-iris px-[22px] text-label font-semibold uppercase text-white transition-colors duration-200 ease-out hover:bg-iris-hover disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-iris;
+  }
+
+  /* Outlined secondary action */
+  .btn-secondary {
+    @apply inline-flex min-h-[46px] items-center justify-center gap-2.5 rounded-button border border-line-strong bg-canvas/40 px-[22px] text-label font-semibold uppercase text-ink backdrop-blur-sm transition-colors duration-200 ease-out hover:border-ink;
   }
 
   /* Containerless text action */
   .btn-ghost {
-    @apply inline-flex min-h-[44px] items-center gap-2 text-label font-semibold uppercase text-bone transition-colors duration-200 ease-out hover:text-saffron disabled:cursor-not-allowed disabled:opacity-40;
+    @apply inline-flex min-h-[44px] items-center gap-2 text-label font-semibold uppercase text-ink transition-colors duration-200 ease-out hover:text-saffron disabled:cursor-not-allowed disabled:opacity-40;
   }
 
   .btn-quiet {
-    @apply inline-flex min-h-[44px] items-center gap-1.5 text-sm text-ash transition-colors duration-200 ease-out hover:text-bone disabled:cursor-not-allowed disabled:opacity-40;
+    @apply inline-flex min-h-[44px] items-center gap-1.5 text-sm text-muted transition-colors duration-200 ease-out hover:text-ink disabled:cursor-not-allowed disabled:opacity-40;
   }
 
   .field {
-    @apply min-h-[48px] w-full rounded-button border border-line-strong bg-void px-5 text-base text-bone transition-colors placeholder:text-ash hover:border-ash focus:border-iris focus:outline-none;
+    @apply min-h-[48px] w-full rounded-button border border-line-strong bg-canvas px-5 text-base text-ink transition-colors placeholder:text-muted hover:border-muted focus:border-iris focus:outline-none;
   }
 
   .code-block {
-    @apply overflow-x-auto rounded-card border border-line bg-void p-6 font-mono text-sm leading-[1.7] text-mist sm:p-[30px];
+    @apply overflow-x-auto rounded-card border border-line bg-canvas p-6 font-mono text-sm leading-[1.7] text-soft sm:p-[30px];
   }
 }

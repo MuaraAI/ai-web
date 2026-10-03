@@ -55,7 +55,7 @@ export function KeyList({ keys, loading, onRefresh }: KeyListProps) {
         <h2 id="keys-title" className="text-heading-sm">
           Kunci Anda
         </h2>
-        <button type="button" onClick={onRefresh} disabled={loading} className="btn-ghost text-ash hover:text-bone">
+        <button type="button" onClick={onRefresh} disabled={loading} className="btn-ghost text-muted hover:text-ink">
           <span className={`material-symbols-rounded ${loading ? "animate-spin" : ""}`} aria-hidden="true">
             sync
           </span>
@@ -70,9 +70,9 @@ export function KeyList({ keys, loading, onRefresh }: KeyListProps) {
       )}
 
       {loading && keys.length === 0 ? (
-        <p className="border-y border-line py-7.5 text-base font-extralight text-ash">Memuat daftar kunci...</p>
+        <p className="border-y border-line py-7.5 text-base font-extralight text-muted">Memuat daftar kunci...</p>
       ) : keys.length === 0 ? (
-        <p className="border-y border-line py-7.5 text-base font-extralight text-mist">
+        <p className="border-y border-line py-7.5 text-base font-extralight text-soft">
           Belum ada kunci API. Buat kunci pertama Anda melalui formulir di atas.
         </p>
       ) : (
@@ -92,11 +92,11 @@ export function KeyList({ keys, loading, onRefresh }: KeyListProps) {
             </thead>
             <tbody className="border-b border-line">
               {keys.map((k) => (
-                <tr key={k.id} className={`border-t border-line ${k.is_active ? "" : "text-ash"}`}>
+                <tr key={k.id} className={`border-t border-line ${k.is_active ? "" : "text-muted"}`}>
                   <td className="py-6 pr-4.5">{k.name}</td>
                   <td className="py-6 pr-4.5 font-mono text-sm">
                     {k.key_prefix}
-                    <span className="text-ash">••••••••</span>
+                    <span className="text-muted">••••••••</span>
                   </td>
                   <td className="py-6 pr-4.5">
                     {k.is_active ? "Aktif" : "Dicabut"}
@@ -118,7 +118,7 @@ export function KeyList({ keys, loading, onRefresh }: KeyListProps) {
                         type="button"
                         onClick={() => handleRevoke(k.id)}
                         disabled={revokingId === k.id}
-                        className="btn-ghost text-ember hover:text-bone"
+                        className="btn-ghost text-ember hover:text-ink"
                       >
                         {revokingId === k.id ? "Mencabut..." : "Cabut"}
                       </button>
