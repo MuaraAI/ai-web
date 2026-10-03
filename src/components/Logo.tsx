@@ -16,7 +16,7 @@ export function LogoMark({ className = "h-[26px] w-[26px]" }: { className?: stri
       <path
         d="M16 7 C13.5 11 18.5 13.5 16 17.5 S12.5 23.5 16 29"
         fill="none"
-        stroke="#000000"
+        className="stroke-canvas"
         strokeWidth="2.4"
         strokeLinecap="round"
       />
@@ -28,7 +28,7 @@ export function Logo() {
   return (
     <span className="flex items-center gap-3">
       <LogoMark />
-      <span className="text-lg tracking-[-0.02em] text-bone">Muara AI</span>
+      <span className="whitespace-nowrap text-lg tracking-[-0.02em] text-ink">Muara AI</span>
     </span>
   );
 }

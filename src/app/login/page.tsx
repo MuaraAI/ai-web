@@ -7,8 +7,7 @@ import { getSupabase } from "@/lib/supabase";
 import { LoginButton } from "@/components/LoginButton";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { FlowField } from "@/components/FlowField";
-import { Estuary } from "@/components/Estuary";
+import { ShapeField } from "@/components/ShapeField";
 import { Reveal } from "@/components/Reveal";
 
 const perks = [
@@ -47,11 +46,11 @@ export default function LoginPage() {
 
   return (
     <div className="relative isolate flex min-h-screen flex-col">
-      {/* The login gate sits at the river mouth. */}
-      <FlowField fallback="mouth" />
+      {/* The background forms a key: signing in leads to your API key. */}
+      <ShapeField fallback="key" />
       <Navbar />
 
-      <main data-scene="mouth" className="container-page grid flex-1 items-center gap-15 pb-30 pt-6 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+      <main data-formation="key" className="container-page flex flex-1 items-center pb-24 pt-6 sm:pt-10">
         <Reveal className="flex max-w-[540px] flex-col gap-7.5">
           <Link href="/" className="btn-quiet w-fit">
             <span className="material-symbols-rounded" aria-hidden="true">arrow_back</span>
@@ -61,7 +60,7 @@ export default function LoginPage() {
           <div className="flex flex-col gap-6">
             <span className="eyebrow">Login with MuaraAI</span>
             <h1 className="text-heading-lg">Masuk ke Muara AI.</h1>
-            <p className="text-body font-extralight text-mist">
+            <p className="text-body font-extralight text-soft">
               Gunakan akun GitHub yang terdaftar sebagai anggota komunitas. Sesi berlaku di seluruh subdomain muaraai.com.
             </p>
           </div>
@@ -73,7 +72,7 @@ export default function LoginPage() {
           )}
 
           {checkingSession ? (
-            <p className="flex min-h-[48px] items-center gap-2 text-sm text-ash">
+            <p className="flex min-h-[48px] items-center gap-2 text-sm text-muted">
               <span className="material-symbols-rounded animate-spin" aria-hidden="true">progress_activity</span>
               Memeriksa sesi login...
             </p>
@@ -84,16 +83,16 @@ export default function LoginPage() {
           <ol className="border-b border-line">
             {perks.map((perk, i) => (
               <li key={perk.title} className="grid grid-cols-[36px_minmax(0,1fr)] gap-3 border-t border-line py-4.5">
-                <span className="pt-0.5 font-mono text-sm text-ash">{String(i + 1).padStart(2, "0")}</span>
+                <span className="pt-0.5 font-mono text-sm text-muted">{String(i + 1).padStart(2, "0")}</span>
                 <div className="flex flex-col gap-1">
                   <span className="text-[15px]">{perk.title}</span>
-                  <span className="text-sm font-extralight text-mist">{perk.body}</span>
+                  <span className="text-sm font-extralight text-soft">{perk.body}</span>
                 </div>
               </li>
             ))}
           </ol>
 
-          <p className="text-sm font-extralight text-ash">
+          <p className="text-sm font-extralight text-muted">
             Belum terdaftar sebagai anggota komunitas?{" "}
             <a
               href="https://muaraai.com"
@@ -104,10 +103,6 @@ export default function LoginPage() {
               Daftar keanggotaan
             </a>
           </p>
-        </Reveal>
-
-        <Reveal delay={150} className="hidden lg:block">
-          <Estuary />
         </Reveal>
       </main>
 

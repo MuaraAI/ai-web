@@ -82,7 +82,7 @@ export function GeneratePanel({
       <div className="flex flex-col gap-6">
         <span className="eyebrow">Kunci API</span>
         <h2 className="text-heading-sm">{hasActiveKey ? "Buat ulang kunci API." : "Buat kunci API baru."}</h2>
-        <p className="max-w-[440px] text-body font-extralight text-mist">
+        <p className="max-w-[440px] text-body font-extralight text-soft">
           Kunci dibuat di browser Anda dan hanya ditampilkan sekali. Server hanya menyimpan hash SHA-256.
         </p>
       </div>
@@ -105,7 +105,7 @@ export function GeneratePanel({
 
         {hasActiveKey && (
           <div className="flex flex-col gap-3">
-            <p className="max-w-[520px] text-[15px] font-extralight leading-relaxed text-mist">
+            <p className="max-w-[520px] text-[15px] font-extralight leading-relaxed text-soft">
               <strong className="font-semibold text-saffron">1 kunci aktif per anggota.</strong> Membuat kunci baru akan langsung menonaktifkan kunci lama Anda.
             </p>
             <label className="flex min-h-[44px] cursor-pointer items-center gap-3 text-[15px]">
