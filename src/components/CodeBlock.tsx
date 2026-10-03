@@ -2,9 +2,9 @@ const TOKEN =
   /((?:^|(?<=\s))(?:#|\/\/)[^\n]*|"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|\b(?:from|import|for|in|or|True|False|None|const|async|await|function|new|export|curl|pip)\b)/m;
 
 function tokenClass(token: string): string {
-  if (token.startsWith("#") || token.startsWith("//")) return "text-ash";
+  if (token.startsWith("#") || token.startsWith("//")) return "text-muted";
   if (token.startsWith('"') || token.startsWith("'")) return "text-saffron";
-  return "text-bone";
+  return "text-ink";
 }
 
 /** Monochrome code with amber strings, white keywords and gray comments. */
