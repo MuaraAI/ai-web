@@ -7,8 +7,6 @@ import { getSupabase } from "@/lib/supabase";
 import { LoginButton } from "@/components/LoginButton";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { FlowField } from "@/components/FlowField";
-import { Estuary } from "@/components/Estuary";
 import { Reveal } from "@/components/Reveal";
 
 const perks = [
@@ -47,12 +45,10 @@ export default function LoginPage() {
 
   return (
     <div className="relative isolate flex min-h-screen flex-col">
-      {/* The login gate sits at the river mouth. */}
-      <FlowField fallback="mouth" />
       <Navbar />
 
-      <main data-scene="mouth" className="container-page grid flex-1 items-center gap-15 pb-30 pt-6 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-        <Reveal className="flex max-w-[540px] flex-col gap-7.5">
+      <main className="container-page flex flex-1 items-center justify-center pb-24 pt-6 sm:pt-10">
+        <Reveal className="flex w-full max-w-[540px] flex-col gap-7.5">
           <Link href="/" className="btn-quiet w-fit">
             <span className="material-symbols-rounded" aria-hidden="true">arrow_back</span>
             Kembali ke beranda
@@ -104,10 +100,6 @@ export default function LoginPage() {
               Daftar keanggotaan
             </a>
           </p>
-        </Reveal>
-
-        <Reveal delay={150} className="hidden lg:block">
-          <Estuary />
         </Reveal>
       </main>
 

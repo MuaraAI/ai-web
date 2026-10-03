@@ -80,8 +80,26 @@
   font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 20;
 }
 
-:root {
+:root,
+:root[data-theme="dark"] {
   color-scheme: dark;
+  --c-void: 0 0 0;
+  --c-bone: 255 255 255;
+  --c-ash: 154 154 154;
+  --c-mist: 189 189 189;
+  --c-saffron: 255 184 41;
+  --c-ember: 255 107 107;
+}
+
+/* Light theme: white paper, near-black ink; accents darkened to keep 4.5:1 on white */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --c-void: 255 255 255;
+  --c-bone: 10 10 10;
+  --c-ash: 102 102 102;
+  --c-mist: 64 64 64;
+  --c-saffron: 166 98 0;
+  --c-ember: 204 48 48;
 }
 
 html {
@@ -91,11 +109,11 @@ html {
 
 html,
 body {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: rgb(var(--c-void));
+  color: rgb(var(--c-bone));
   font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   font-feature-settings: "ss01" on;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -114,7 +132,7 @@ p {
 @supports not selector(::-webkit-scrollbar) {
   html {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+    scrollbar-color: rgb(var(--c-bone) / 0.18) transparent;
   }
 }
 
@@ -129,14 +147,14 @@ p {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.16);
+  background: rgb(var(--c-bone) / 0.16);
   border: 3px solid transparent;
   border-radius: 9999px;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.32);
+  background-color: rgb(var(--c-bone) / 0.32);
 }
 
 ::-webkit-scrollbar-thumb:active {
@@ -166,34 +184,51 @@ p {
 }
 
 *:focus-visible {
-  outline: 2px solid #ffb829;
+  outline: 2px solid rgb(var(--c-saffron));
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* Scroll reveal — content rises out of the current as it enters the viewport */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
+/* Theme switch: colors cross-fade instead of snapping (only while switching) */
+html[data-theme-switching] *,
+html[data-theme-switching] *::before,
+html[data-theme-switching] *::after {
   transition:
-    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    fill 0.35s ease,
+    stroke 0.35s ease !important;
 }
 
-.reveal[data-visible="true"] {
-  opacity: 1;
-  transform: none;
+/* GSAP scroll motion: hidden only when JS has armed it, so no-JS and reduced motion stay readable */
+html[data-motion] [data-reveal] {
+  visibility: hidden;
+}
+
+/* Reading thread on wide screens: a line through every section, just left of the page column */
+.thread {
+  left: calc((100% - 1280px) / 2 - 24px);
+}
+
+.thread-node {
+  left: -28px;
+}
+
+.thread-node.is-active {
+  background-color: #8052ff;
+  border-color: #8052ff;
+  transform: scale(1.4);
+}
+
+.split-word {
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
   }
 
   .type-caret {
@@ -218,7 +253,7 @@ p {
 
   /* The single filled action per view */
   .btn-primary {
-    @apply inline-flex min-h-[46px] items-center justify-center gap-2.5 rounded-button bg-iris px-[22px] text-label font-semibold uppercase text-bone transition-colors duration-200 ease-out hover:bg-iris-hover disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-iris;
+    @apply inline-flex min-h-[46px] items-center justify-center gap-2.5 rounded-button bg-iris px-[22px] text-label font-semibold uppercase text-white transition-colors duration-200 ease-out hover:bg-iris-hover disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-iris;
   }
 
   /* Containerless text action */

@@ -10,7 +10,6 @@ import { KeyList, type ApiKeyItem } from "@/components/dashboard/KeyList";
 import { CodeExamples } from "@/components/dashboard/CodeExamples";
 import { ViewOnceModal } from "@/components/ViewOnceModal";
 import { CopyEndpoint } from "@/components/CopyEndpoint";
-import { FlowField } from "@/components/FlowField";
 import { Reveal } from "@/components/Reveal";
 import { loadMember, type GuardResult } from "@/lib/guard";
 import { DB, getSupabase } from "@/lib/supabase";
@@ -18,8 +17,6 @@ import { DB, getSupabase } from "@/lib/supabase";
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative isolate flex min-h-screen flex-col">
-      {/* Members work out at sea: calm swell, with a pass by the mouth at key creation. */}
-      <FlowField fallback="sea" />
       <Navbar />
       {children}
       <Footer />
@@ -179,11 +176,11 @@ export default function DashboardPage() {
             </div>
           </Reveal>
 
-          <Reveal scene="sea">
+          <Reveal>
             <QuotaBar />
           </Reveal>
 
-          <Reveal scene="mouth">
+          <Reveal>
             <GeneratePanel
               userId={guardState.member.id}
               hasActiveKey={Boolean(activeKey)}
@@ -193,11 +190,11 @@ export default function DashboardPage() {
             />
           </Reveal>
 
-          <Reveal scene="sea">
+          <Reveal>
             <KeyList keys={keys} loading={loadingKeys} onRefresh={fetchKeys} />
           </Reveal>
 
-          <Reveal scene="deep">
+          <Reveal>
             <CodeExamples />
           </Reveal>
         </div>
