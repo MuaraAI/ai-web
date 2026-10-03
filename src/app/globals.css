@@ -201,6 +201,18 @@ html[data-theme-switching] *::after {
     stroke 0.35s ease !important;
 }
 
+/* Theme switch reveal: the new theme grows as a circle from the center (see ThemeToggle).
+   The old snapshot stays put underneath; the new one is clipped by a script-driven circle. */
+html[data-theme-reveal]::view-transition-old(root),
+html[data-theme-reveal]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-theme-reveal]::view-transition-new(root) {
+  z-index: 1;
+}
+
 /* GSAP scroll motion: hidden only when JS has armed it, so no-JS and reduced motion stay readable */
 html[data-motion] [data-reveal] {
   visibility: hidden;

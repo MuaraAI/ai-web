@@ -8,11 +8,30 @@ const REFRESH_MS = 60_000;
 
 // Shown until (or unless) the gateway answers.
 const SPECS = [
-  { value: "500k", label: "Jendela konteks token" },
-  { value: "64k", label: "Maksimal token keluaran" },
-  { value: "<80ms", label: "Overhead edge gateway" },
-  { value: "Zero log", label: "Prompt tidak disimpan" },
+  { value: "500k", label: "Jendela konteks", hint: "Token maksimum yang dibaca dalam satu permintaan" },
+  { value: "64k", label: "Keluaran maksimum", hint: "Panjang jawaban terpanjang dalam token" },
+  { value: "<80ms", label: "Overhead gateway", hint: "Tambahan latensi dari lapisan edge" },
+  { value: "Zero log", label: "Privasi prompt", hint: "Percakapan di-stream, tidak pernah disimpan" },
 ];
+
+const VALUE_CLASS = "text-[clamp(2.25rem,3.6vw,3rem)] leading-none tracking-[-0.04em] tabular-nums";
+
+// Columns follow the tile count: three figures sit in one row (2 + full-width on phones).
+const COLS: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-2 sm:grid-cols-3 [&>*:last-child]:col-span-2 sm:[&>*:last-child]:col-span-1",
+};
+
+function Tile({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-3 border-b border-r border-line p-5 sm:p-6">
+      <dt className="label">{label}</dt>
+      {children}
+      {hint && <dd className="text-[13px] font-extralight leading-snug text-mist">{hint}</dd>}
+    </div>
+  );
+}
 
 type State = { status: "loading" } | { status: "error" } | { status: "live"; items: StatItem[]; at: Date };
 
@@ -50,7 +69,7 @@ function Figure({ item }: { item: StatItem }) {
   }, [item]);
 
   return (
-    <dd ref={ref} className="text-[clamp(2rem,3.4vw,2.75rem)] leading-[1.1] tracking-[-0.035em] tabular-nums">
+    <dd ref={ref} className={VALUE_CLASS}>
       {formatStat(item, 0)}
     </dd>
   );
@@ -96,31 +115,32 @@ export function LiveStats({ className = "" }: { className?: string }) {
 
   const live = state.status === "live";
 
+  const tiles = live ? state.items.length : SPECS.length;
+
   return (
     <section aria-label="Statistik gateway" aria-busy={state.status === "loading"} className={className}>
       <div className="mb-4.5 flex items-baseline justify-between gap-4.5">
-        <span className="label">{live ? "Statistik langsung" : "Spesifikasi"}</span>
+        <span className="label text-bone">{live ? "Statistik langsung" : "Spesifikasi gateway"}</span>
         <span className="text-caption text-ash" aria-live="polite">
           {state.status === "loading" && "Memuat statistik..."}
-          {state.status === "error" && "Statistik belum tersedia"}
+          {state.status === "error" && "Data langsung belum tersedia"}
           {live &&
             `Diperbarui ${state.at.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}`}
+          {live && <span className="hidden sm:inline"> · tiap menit</span>}
         </span>
       </div>
 
-      <dl className="grid grid-cols-2 border-l border-t border-line">
+      <dl className={`grid border-l border-t border-line ${COLS[tiles] ?? "grid-cols-2"}`}>
         {live
           ? state.items.map((item) => (
-              <div key={item.key} className="flex flex-col-reverse gap-1.5 border-b border-r border-line p-4.5 sm:p-6">
-                <dt className="text-sm text-ash">{item.label}</dt>
+              <Tile key={item.key} label={item.label} hint={item.hint}>
                 <Figure item={item} />
-              </div>
+              </Tile>
             ))
           : SPECS.map((s) => (
-              <div key={s.label} className="flex flex-col-reverse gap-1.5 border-b border-r border-line p-4.5 sm:p-6">
-                <dt className="text-sm text-ash">{s.label}</dt>
-                <dd className="text-[clamp(2rem,3.4vw,2.75rem)] leading-[1.1] tracking-[-0.035em]">{s.value}</dd>
-              </div>
+              <Tile key={s.label} label={s.label} hint={s.hint}>
+                <dd className={VALUE_CLASS}>{s.value}</dd>
+              </Tile>
             ))}
       </dl>
     </section>

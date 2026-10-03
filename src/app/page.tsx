@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { CopyButton } from "@/components/CopyButton";
 import { CopyEndpoint } from "@/components/CopyEndpoint";
 import { CodeBlock } from "@/components/CodeBlock";
 import { HomeMotion } from "@/components/HomeMotion";
@@ -157,7 +158,10 @@ export default function HomePage() {
                     <span className="pt-1 font-mono text-sm text-ash">{String(i + 1).padStart(2, "0")}</span>
                     <div className="flex flex-col gap-1.5">
                       <div className="flex flex-wrap items-baseline justify-between gap-x-4.5 gap-y-1">
-                        <code className="font-mono text-base text-bone sm:text-lg">{m.id}</code>
+                        <span className="-my-2.5 flex min-w-0 items-center gap-1">
+                          <code className="select-all break-all font-mono text-base text-bone sm:text-lg">{m.id}</code>
+                          <CopyButton text={m.id} label={`Salin ID model ${m.id}`} className="shrink-0" />
+                        </span>
                         <span className={`label ${m.highlight ? "text-saffron" : ""}`}>{m.tier}</span>
                       </div>
                       <p className="text-[15px] font-extralight leading-relaxed text-mist">{m.description}</p>
