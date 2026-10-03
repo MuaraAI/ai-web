@@ -184,7 +184,7 @@ main();`,
               aria-controls="examples-panel"
               onClick={() => setActiveTab(tab)}
               className={`-mb-px min-h-[44px] border-b-2 text-label font-semibold uppercase transition-colors ${
-                activeTab === tab ? "border-iris text-ink" : "border-transparent text-muted hover:text-ink"
+                activeTab === tab ? "border-iris text-bone" : "border-transparent text-ash hover:text-bone"
               }`}
             >
               {snippets[tab].title}

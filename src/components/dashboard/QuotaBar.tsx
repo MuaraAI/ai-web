@@ -19,13 +19,13 @@ function Meter({ title, hint, used, max }: { title: string; hint: string; used: 
     <div className="flex flex-col gap-4.5">
       <div className="flex items-baseline justify-between gap-4.5">
         <h3 className="label text-label">{title}</h3>
-        <span className="text-caption text-muted">{hint}</span>
+        <span className="text-caption text-ash">{hint}</span>
       </div>
       <p className="flex flex-wrap items-baseline gap-x-3">
         <span className="text-[clamp(3rem,6vw,4.875rem)] leading-none tracking-[-0.04em]">
           {used.toLocaleString("id-ID")}
         </span>
-        <span className="text-heading-2xs text-muted">/ {max.toLocaleString("id-ID")} request</span>
+        <span className="text-heading-2xs text-ash">/ {max.toLocaleString("id-ID")} request</span>
       </p>
       <div
         role="progressbar"
@@ -68,7 +68,7 @@ export function QuotaBar() {
   }, []);
 
   const refreshButton = (label: string) => (
-    <button type="button" onClick={fetchQuota} disabled={loading} className="btn-ghost text-muted hover:text-ink">
+    <button type="button" onClick={fetchQuota} disabled={loading} className="btn-ghost text-ash hover:text-bone">
       <span className={`material-symbols-rounded ${loading ? "animate-spin" : ""}`} aria-hidden="true">sync</span>
       {label}
     </button>
@@ -93,7 +93,7 @@ export function QuotaBar() {
         </div>
       ) : !data ? (
         <div className="flex flex-wrap items-center justify-between gap-4.5 border-y border-line py-6">
-          <p className="text-base font-extralight text-soft">
+          <p className="text-base font-extralight text-mist">
             Informasi kuota akan aktif setelah Anda membuat kunci API pertama.
           </p>
           {refreshButton("Muat ulang")}
