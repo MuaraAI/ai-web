@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CodeBlock } from "@/components/CodeBlock";
 
 type TabId = "hermes" | "cursor" | "claude" | "codex" | "aider" | "python" | "javascript" | "curl";
 
@@ -142,40 +143,48 @@ main();`,
     }
   };
 
+  const tabs = Object.keys(snippets) as TabId[];
+
   return (
-    <div className="rounded-xl border border-white/10 bg-surface-solid/70 p-5 sm:p-6 backdrop-blur-sm space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-rounded text-accent text-lg">terminal</span>
-          <h3 className="text-sm font-bold text-text">Panduan Integrasi Alat & SDK</h3>
+    <section aria-labelledby="examples-title" className="flex flex-col gap-7.5">
+      <div className="flex flex-wrap items-end justify-between gap-6">
+        <div className="flex flex-col gap-4.5">
+          <span className="eyebrow">Integrasi</span>
+          <h2 id="examples-title" className="text-heading-sm">
+            Alat &amp; SDK
+          </h2>
         </div>
 
-        <div className="flex items-center gap-2">
-          <label className="text-[11px] text-text-muted">Target Model:</label>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="target-model" className="label">
+            Target model
+          </label>
           <select
+            id="target-model"
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
-            className="rounded-lg border border-stroke bg-background px-2.5 py-1 text-xs text-text focus:border-accent focus:outline-none"
+            className="field min-h-[44px] w-auto pr-10 font-mono text-sm"
           >
-            <option value="muara-v1-flash-high">muara-v1-flash-high (Coding & Penalaran)</option>
+            <option value="muara-v1-flash-high">muara-v1-flash-high (Coding &amp; Penalaran)</option>
             <option value="muara-v1-flash-medium">muara-v1-flash-medium (Seimbang)</option>
             <option value="muara-v1-flash-low">muara-v1-flash-low (Cepat / Responsif)</option>
           </select>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-1">
-        <div className="flex flex-wrap items-center gap-1">
-          {(Object.keys(snippets) as TabId[]).map((tab) => (
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-1.5 border-b border-line">
+        <div role="tablist" aria-label="Contoh integrasi" className="flex flex-wrap gap-x-6 gap-y-1.5">
+          {tabs.map((tab) => (
             <button
               key={tab}
               type="button"
+              role="tab"
+              id={`tab-${tab}`}
+              aria-selected={activeTab === tab}
+              aria-controls="examples-panel"
               onClick={() => setActiveTab(tab)}
-              className={`rounded-lg px-3 py-1 text-xs font-medium transition-all ${
-                activeTab === tab
-                  ? "bg-accent/10 border border-accent/30 text-accent font-semibold"
-                  : "text-text-muted hover:text-text hover:bg-white/5 border border-transparent"
+              className={`-mb-px min-h-[44px] border-b-2 text-label font-semibold uppercase transition-colors ${
+                activeTab === tab ? "border-iris text-bone" : "border-transparent text-ash hover:text-bone"
               }`}
             >
               {snippets[tab].title}
@@ -183,24 +192,17 @@ main();`,
           ))}
         </div>
 
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="inline-flex items-center gap-1 text-[11px] text-text-muted hover:text-text py-1 transition-colors ml-auto sm:ml-0"
-        >
-          <span className="material-symbols-rounded text-xs">
+        <button type="button" onClick={handleCopy} className="btn-quiet ml-auto">
+          <span className="material-symbols-rounded" aria-hidden="true">
             {copied ? "check" : "content_copy"}
           </span>
-          <span>{copied ? "Tersalin" : "Salin Konfigurasi"}</span>
+          <span aria-live="polite">{copied ? "Tersalin" : "Salin konfigurasi"}</span>
         </button>
       </div>
 
-      {/* Code Display Area */}
-      <div className="relative rounded-lg border border-stroke bg-code-bg p-4 font-mono text-xs text-code-text overflow-x-auto">
-        <pre className="leading-relaxed">
-          <code>{snippets[activeTab].code}</code>
-        </pre>
+      <div id="examples-panel" role="tabpanel" aria-labelledby={`tab-${activeTab}`}>
+        <CodeBlock code={snippets[activeTab].code} />
       </div>
-    </div>
+    </section>
   );
 }

@@ -12,6 +12,38 @@ export interface QuotaData {
   window_resets_at: string;
 }
 
+function Meter({ title, hint, used, max }: { title: string; hint: string; used: number; max: number }) {
+  const pct = Math.min(100, Math.round((used / max) * 100));
+
+  return (
+    <div className="flex flex-col gap-4.5">
+      <div className="flex items-baseline justify-between gap-4.5">
+        <h3 className="label text-label">{title}</h3>
+        <span className="text-caption text-ash">{hint}</span>
+      </div>
+      <p className="flex flex-wrap items-baseline gap-x-3">
+        <span className="text-[clamp(3rem,6vw,4.875rem)] leading-none tracking-[-0.04em]">
+          {used.toLocaleString("id-ID")}
+        </span>
+        <span className="text-heading-2xs text-ash">/ {max.toLocaleString("id-ID")} request</span>
+      </p>
+      <div
+        role="progressbar"
+        aria-label={title}
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        className="h-0.5 w-full overflow-hidden rounded-pill bg-line-strong"
+      >
+        <div
+          className={`h-full transition-[width] duration-500 ease-out ${pct > 80 ? "bg-saffron" : "bg-iris"}`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export function QuotaBar() {
   const [data, setData] = useState<QuotaData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,94 +67,48 @@ export function QuotaBar() {
     fetchQuota();
   }, []);
 
-  if (loading && !data) {
-    return (
-      <div className="rounded-xl border border-white/10 bg-surface-solid/60 p-5 backdrop-blur-sm animate-pulse">
-        <div className="h-4 w-32 bg-white/10 rounded mb-4" />
-        <div className="h-3 w-full bg-white/5 rounded" />
-      </div>
-    );
-  }
-
-  if (!data) {
-    return (
-      <div className="rounded-xl border border-white/10 bg-surface-solid/60 p-5 text-xs text-text-muted flex items-center justify-between">
-        <span>Informasi kuota akan aktif setelah Anda membuat kunci API pertama.</span>
-        <button
-          type="button"
-          onClick={fetchQuota}
-          className="rounded border border-stroke px-2 py-1 text-[11px] hover:text-text"
-        >
-          Muat Ulang
-        </button>
-      </div>
-    );
-  }
-
-  const minutePct = Math.min(100, Math.round((data.minute_count / data.max_per_minute) * 100));
-  const windowPct = Math.min(100, Math.round((data.window_count / data.max_requests) * 100));
+  const refreshButton = (label: string) => (
+    <button type="button" onClick={fetchQuota} disabled={loading} className="btn-ghost text-ash hover:text-bone">
+      <span className={`material-symbols-rounded ${loading ? "animate-spin" : ""}`} aria-hidden="true">sync</span>
+      {label}
+    </button>
+  );
 
   return (
-    <div className="rounded-xl border border-stroke bg-surface-solid p-5 sm:p-6 shadow-sm space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-rounded text-accent-dark text-lg">speed</span>
-          <h3 className="text-sm font-bold text-text">Status Kuota & Batas Penggunaan</h3>
-        </div>
-        <button
-          type="button"
-          onClick={fetchQuota}
-          disabled={loading}
-          className="inline-flex items-center gap-1 rounded-lg border border-stroke bg-surface px-2.5 py-1 text-[11px] font-medium text-text-muted transition-colors hover:text-text disabled:opacity-50"
-        >
-          <span className={`material-symbols-rounded text-xs ${loading ? "animate-spin" : ""}`}>
-            sync
-          </span>
-          <span>Segarkan</span>
-        </button>
+    <section aria-labelledby="quota-title" className="flex flex-col gap-9">
+      <div className="flex flex-wrap items-baseline justify-between gap-4.5">
+        <h2 id="quota-title" className="text-heading-sm">Kuota</h2>
+        {data && refreshButton("Segarkan")}
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {/* Minute limit */}
-        <div className="space-y-1.5 rounded-lg border border-stroke bg-background/60 p-3.5">
-          <div className="flex justify-between text-xs">
-            <span className="text-text-muted">Batas Menit Ini</span>
-            <span className="font-mono font-medium text-text">
-              {data.minute_count} / {data.max_per_minute} req
-            </span>
-          </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-stroke/60">
-            <div
-              className={`h-full rounded-full transition-all duration-300 ${
-                minutePct > 80 ? "bg-amber-500" : "bg-accent-dark"
-              }`}
-              style={{ width: `${minutePct}%` }}
-            />
-          </div>
-          <p className="text-[10px] text-text-muted">Reset otomatis setiap awal menit</p>
+      {loading && !data ? (
+        <div className="grid animate-pulse grid-cols-1 gap-15 md:grid-cols-2" aria-hidden="true">
+          {[0, 1].map((i) => (
+            <div key={i} className="flex flex-col gap-4.5">
+              <div className="h-3 w-28 rounded-pill bg-line-strong" />
+              <div className="h-14 w-40 rounded-pill bg-line" />
+              <div className="h-0.5 w-full bg-line-strong" />
+            </div>
+          ))}
         </div>
-
-        {/* 5-hour limit */}
-        <div className="space-y-1.5 rounded-lg border border-stroke bg-background/60 p-3.5">
-          <div className="flex justify-between text-xs">
-            <span className="text-text-muted">Batas Siklus ({data.window_hours} Jam)</span>
-            <span className="font-mono font-medium text-text">
-              {data.window_count} / {data.max_requests} req
-            </span>
-          </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-stroke/60">
-            <div
-              className={`h-full rounded-full transition-all duration-300 ${
-                windowPct > 80 ? "bg-amber-500" : "bg-accent-dark"
-              }`}
-              style={{ width: `${windowPct}%` }}
-            />
-          </div>
-          <p className="text-[10px] text-text-muted">
-            Reset: {new Date(data.window_resets_at).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB
+      ) : !data ? (
+        <div className="flex flex-wrap items-center justify-between gap-4.5 border-y border-line py-6">
+          <p className="text-base font-extralight text-mist">
+            Informasi kuota akan aktif setelah Anda membuat kunci API pertama.
           </p>
+          {refreshButton("Muat ulang")}
         </div>
-      </div>
-    </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-15 md:grid-cols-2">
+          <Meter title="Menit ini" hint="Reset tiap awal menit" used={data.minute_count} max={data.max_per_minute} />
+          <Meter
+            title={`Siklus ${data.window_hours} jam`}
+            hint={`Reset ${new Date(data.window_resets_at).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB`}
+            used={data.window_count}
+            max={data.max_requests}
+          />
+        </div>
+      )}
+    </section>
   );
 }

@@ -10,8 +10,44 @@ import { KeyList, type ApiKeyItem } from "@/components/dashboard/KeyList";
 import { CodeExamples } from "@/components/dashboard/CodeExamples";
 import { ViewOnceModal } from "@/components/ViewOnceModal";
 import { CopyEndpoint } from "@/components/CopyEndpoint";
+import { FlowField } from "@/components/FlowField";
+import { Reveal } from "@/components/Reveal";
 import { loadMember, type GuardResult } from "@/lib/guard";
 import { DB, getSupabase } from "@/lib/supabase";
+
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative isolate flex min-h-screen flex-col">
+      {/* Members work out at sea: wide, calm swell that deepens as they scroll. */}
+      <FlowField from={0.8} to={1} />
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
+  );
+}
+
+function StatusNotice({
+  eyebrow,
+  eyebrowClass = "text-saffron",
+  title,
+  children,
+}: {
+  eyebrow: string;
+  eyebrowClass?: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <main className="flex flex-1 items-center justify-center px-6 pb-30 pt-15">
+      <Reveal className="flex w-full max-w-[560px] flex-col gap-6">
+        <span className={`eyebrow ${eyebrowClass}`}>{eyebrow}</span>
+        <h1 className="text-heading-sm">{title}</h1>
+        {children}
+      </Reveal>
+    </main>
+  );
+}
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -66,90 +102,59 @@ export default function DashboardPage() {
     }
   };
 
+  const logoutButton = (
+    <button type="button" onClick={handleLogout} disabled={loggingOut} className="btn-quiet">
+      <span className="material-symbols-rounded" aria-hidden="true">logout</span>
+      <span>{loggingOut ? "Keluar..." : "Keluar"}</span>
+    </button>
+  );
+
   // 1. Loading state
   if (!guardState || guardState.state === "anon") {
     return (
-      <div className="flex min-h-screen flex-col bg-background text-text">
-        <Navbar />
+      <Shell>
         <main className="flex flex-1 items-center justify-center p-6">
-          <div className="flex items-center gap-2 text-xs text-text-muted">
-            <span className="material-symbols-rounded animate-spin text-sm text-accent">
+          <p className="flex items-center gap-2 text-sm text-ash">
+            <span className="material-symbols-rounded animate-spin text-iris" aria-hidden="true">
               progress_activity
             </span>
-            <span>Memverifikasi akun dan hak akses...</span>
-          </div>
+            Memverifikasi akun dan hak akses...
+          </p>
         </main>
-        <Footer />
-      </div>
+      </Shell>
     );
   }
 
   // 2. Pending approval state
   if (guardState.state === "pending") {
     return (
-      <div className="flex min-h-screen flex-col bg-background text-text">
-        <Navbar />
-        <main className="flex flex-1 items-center justify-center p-6">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface-solid/80 p-7 text-center backdrop-blur-xl shadow-xl space-y-4">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
-              <span className="material-symbols-rounded text-2xl">pending</span>
-            </div>
-            <h2 className="text-lg font-bold text-text">Pendaftaran Menunggu Persetujuan</h2>
-            <p className="text-xs text-text-muted leading-relaxed">
-              Akun Anda telah terdaftar, namun status keanggotaan Anda saat ini masih dalam tahap peninjauan oleh pengurus komunitas MuaraAI.
-            </p>
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a
-                href="https://muaraai.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto rounded-lg bg-surface-hover border border-stroke px-4 py-2 text-xs font-medium text-text hover:text-white transition-colors"
-              >
-                Kunjungi Portal Utama
-              </a>
-              <button
-                type="button"
-                onClick={handleLogout}
-                disabled={loggingOut}
-                className="w-full sm:w-auto rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-2 text-xs font-medium text-red-400 hover:bg-red-500/20 transition-colors"
-              >
-                Keluar
-              </button>
-            </div>
+      <Shell>
+        <StatusNotice eyebrow="Menunggu persetujuan" title="Pendaftaran sedang ditinjau.">
+          <p className="text-body font-extralight text-mist">
+            Akun Anda telah terdaftar, namun status keanggotaan Anda masih dalam tahap peninjauan oleh pengurus komunitas MuaraAI.
+          </p>
+          <div className="flex flex-wrap items-center gap-7.5">
+            <a href="https://muaraai.com" target="_blank" rel="noopener noreferrer" className="btn-ghost">
+              Kunjungi portal utama
+            </a>
+            {logoutButton}
           </div>
-        </main>
-        <Footer />
-      </div>
+        </StatusNotice>
+      </Shell>
     );
   }
 
   // 3. Rejected state
   if (guardState.state === "rejected") {
     return (
-      <div className="flex min-h-screen flex-col bg-background text-text">
-        <Navbar />
-        <main className="flex flex-1 items-center justify-center p-6">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface-solid/80 p-7 text-center backdrop-blur-xl shadow-xl space-y-4">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
-              <span className="material-symbols-rounded text-2xl">block</span>
-            </div>
-            <h2 className="text-lg font-bold text-text">Akses Belum Disetujui</h2>
-            <p className="text-xs text-text-muted leading-relaxed">
-              Mohon maaf, status keanggotaan Anda belum disetujui untuk mengakses gateway AI komunitas ini. Silakan hubungi pengurus divisi Anda.
-            </p>
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="rounded-lg border border-stroke bg-surface-hover px-4 py-2 text-xs font-medium text-text hover:text-white"
-              >
-                Keluar
-              </button>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
+      <Shell>
+        <StatusNotice eyebrow="Akses ditolak" eyebrowClass="text-ember" title="Akses belum disetujui.">
+          <p className="text-body font-extralight text-mist">
+            Mohon maaf, status keanggotaan Anda belum disetujui untuk mengakses gateway AI komunitas ini. Silakan hubungi pengurus divisi Anda.
+          </p>
+          <div>{logoutButton}</div>
+        </StatusNotice>
+      </Shell>
     );
   }
 
@@ -157,74 +162,49 @@ export default function DashboardPage() {
   const activeKey = keys.find((k) => k.is_active);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-text">
-      <Navbar />
-
-      <main className="flex-1 py-8 px-4 sm:px-6">
-        <div className="mx-auto max-w-5xl space-y-6">
-          {/* Member header card */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-stroke bg-surface-solid p-5 sm:p-6 shadow-sm">
-            <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="text-lg sm:text-xl font-bold text-text">
-                  Dashboard Anggota
-                </h1>
-                <span className="inline-flex items-center rounded-full border border-stroke bg-accent/20 px-2.5 py-0.5 text-[11px] font-mono font-semibold text-on-accent capitalize">
-                  {guardState.member.hierarchy}
-                </span>
-              </div>
-              <p className="mt-1 text-xs text-text-muted">
-                Selamat datang kembali, <strong className="text-text font-medium">{guardState.member.fullName}</strong>
-              </p>
+    <Shell>
+      <main className="flex-1">
+        <div className="container-page flex flex-col gap-24 pb-30 pt-10 sm:gap-30 sm:pt-15">
+          {/* Greeting */}
+          <Reveal className="flex flex-wrap items-end justify-between gap-9">
+            <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-6">
+              <span className="eyebrow">
+                Dashboard anggota · <span className="capitalize">{guardState.member.hierarchy}</span>
+              </span>
+              <h1 className="text-heading-lg">Selamat datang kembali, {guardState.member.fullName}.</h1>
             </div>
-
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-col items-start gap-1">
               <CopyEndpoint />
-              <button
-                type="button"
-                onClick={handleLogout}
-                disabled={loggingOut}
-                className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-stroke bg-surface px-3 py-1.5 text-xs font-medium text-text-muted transition-colors hover:text-red-500 hover:border-red-500/30"
-              >
-                <span className="material-symbols-rounded text-sm">logout</span>
-                <span>{loggingOut ? "Keluar..." : "Keluar"}</span>
-              </button>
+              {logoutButton}
             </div>
-          </div>
+          </Reveal>
 
-          {/* Quota overview */}
-          <QuotaBar />
+          <Reveal>
+            <QuotaBar />
+          </Reveal>
 
-          {/* Key generation panel */}
-          <GeneratePanel
-            userId={guardState.member.id}
-            hasActiveKey={Boolean(activeKey)}
-            activeKeyId={activeKey?.id}
-            onKeyCreated={(raw) => setViewOnceKey(raw)}
-            onRefresh={fetchKeys}
-          />
+          <Reveal>
+            <GeneratePanel
+              userId={guardState.member.id}
+              hasActiveKey={Boolean(activeKey)}
+              activeKeyId={activeKey?.id}
+              onKeyCreated={(raw) => setViewOnceKey(raw)}
+              onRefresh={fetchKeys}
+            />
+          </Reveal>
 
-          {/* Key list table */}
-          <KeyList
-            keys={keys}
-            loading={loadingKeys}
-            onRefresh={fetchKeys}
-          />
+          <Reveal>
+            <KeyList keys={keys} loading={loadingKeys} onRefresh={fetchKeys} />
+          </Reveal>
 
-          {/* Code integration examples */}
-          <CodeExamples />
+          <Reveal>
+            <CodeExamples />
+          </Reveal>
         </div>
       </main>
 
       {/* View once modal when a key is newly generated */}
-      {viewOnceKey && (
-        <ViewOnceModal
-          apiKey={viewOnceKey}
-          onClose={() => setViewOnceKey(null)}
-        />
-      )}
-
-      <Footer />
-    </div>
+      {viewOnceKey && <ViewOnceModal apiKey={viewOnceKey} onClose={() => setViewOnceKey(null)} />}
+    </Shell>
   );
 }

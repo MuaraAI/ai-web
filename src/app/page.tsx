@@ -2,245 +2,13 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CopyEndpoint } from "@/components/CopyEndpoint";
+import { Estuary } from "@/components/Estuary";
+import { FlowField } from "@/components/FlowField";
+import { JourneyRail } from "@/components/JourneyRail";
+import { Reveal } from "@/components/Reveal";
+import { CodeBlock } from "@/components/CodeBlock";
 
-export default function HomePage() {
-  return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-accent selection:text-accent-dark">
-      <Navbar />
-
-      <main className="flex-1 overflow-x-hidden">
-        {/* Hero Section */}
-        <section className="relative pt-10 pb-16 sm:pt-16 sm:pb-24 px-4 sm:px-6 max-w-6xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto">
-            <div className="badge-dark mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#92EEFF] shadow-[0_0_8px_#92EEFF] animate-pulse" />
-              <span>MUARA V1 FLASH GATEWAY</span>
-            </div>
-
-            <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground leading-[1.12] mb-6">
-              Antarmuka REST API Cerdas untuk Komunitas MuaraAI.
-            </h1>
-
-            <p className="text-secondary text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8">
-              Akses independen berkecepatan tinggi ke model penalaran mutakhir dengan format standar OpenAI API. Disediakan khusus bagi mahasiswa FTI UBSI Pontianak untuk riset, karya, dan inovasi tanpa batas biaya.
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
-              <Link
-                href="/login"
-                className="inline-flex items-center justify-center px-7 py-3.5 rounded-pill bg-accent hover:bg-accent-hover text-accent-dark font-semibold text-sm transition-all duration-200 ease-glass shadow-float"
-              >
-                Buat Kunci API
-              </Link>
-              <a
-                href="https://github.com/MuaraAI"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="uw-button"
-              >
-                <span>
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                  </svg>
-                  GitHub Org
-                </span>
-              </a>
-            </div>
-
-            {/* Copyable Base URL Banner */}
-            <div className="flex justify-center">
-              <CopyEndpoint />
-            </div>
-
-            {/* 4 Stat Cards */}
-            <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-left">
-              <div className="glass-card-3d px-4 py-3.5 text-xs font-mono text-secondary">
-                <span className="text-accent-dark font-bold block text-lg mb-0.5">500k</span>
-                Jendela Konteks
-              </div>
-              <div className="glass-card-3d px-4 py-3.5 text-xs font-mono text-secondary">
-                <span className="text-accent-dark font-bold block text-lg mb-0.5">64k</span>
-                Max Output Token
-              </div>
-              <div className="glass-card-3d px-4 py-3.5 text-xs font-mono text-secondary">
-                <span className="text-accent-dark font-bold block text-lg mb-0.5">Sub-80ms</span>
-                Overhead Edge
-              </div>
-              <div className="glass-card-3d px-4 py-3.5 text-xs font-mono text-secondary">
-                <span className="text-accent-dark font-bold block text-lg mb-0.5">Zero Log</span>
-                Privasi Prompt
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Technical Specs Strip */}
-        <section className="border-b border-stroke bg-surface-solid/30 py-6">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-xs">
-              <div>
-                <span className="text-text-muted block text-[11px]">Protokol Gateway</span>
-                <span className="font-semibold text-text font-mono mt-0.5 block">OpenAI REST + SSE</span>
-              </div>
-              <div>
-                <span className="text-text-muted block text-[11px]">Jendela Konteks</span>
-                <span className="font-semibold text-text font-mono mt-0.5 block">500.000 Token</span>
-              </div>
-              <div>
-                <span className="text-text-muted block text-[11px]">Keluaran Maksimal</span>
-                <span className="font-semibold text-text font-mono mt-0.5 block">64.000 Token</span>
-              </div>
-              <div>
-                <span className="text-text-muted block text-[11px]">Privasi Data</span>
-                <span className="font-semibold text-accent-dark font-mono mt-0.5 block">Zero Prompt Logging</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Model Specification Table */}
-        <section id="models" className="border-b border-stroke py-16 sm:py-20">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 space-y-8">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-text">
-                Spesifikasi Model Muara V1 Flash
-              </h2>
-              <p className="mt-1 text-xs sm:text-sm text-text-muted">
-                Tersedia 3 tingkat penalaran terkelola melalui endpoint tunggal
-              </p>
-            </div>
-
-            <div className="overflow-x-auto rounded-xl border border-stroke bg-surface-solid">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-b border-stroke bg-surface text-text-muted">
-                    <th className="py-3 px-4 font-semibold">Model Identifier</th>
-                    <th className="py-3 px-4 font-semibold">Tingkat Penalaran</th>
-                    <th className="py-3 px-4 font-semibold">Context / Max Out</th>
-                    <th className="py-3 px-4 font-semibold">Karakteristik & Peruntukan</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  <tr className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 px-4 font-mono font-medium text-accent-dark">
-                      muara-v1-flash-low
-                    </td>
-                    <td className="py-3.5 px-4 text-text font-medium">Rendah (Cepat)</td>
-                    <td className="py-3.5 px-4 font-mono text-text-muted">500k / 64k</td>
-                    <td className="py-3.5 px-4 text-text-muted">
-                      Latensi terendah (2-3 detik). Percakapan interaktif, perangkuman, dan otomatisasi skrip ringan.
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 px-4 font-mono font-medium text-accent-dark">
-                      muara-v1-flash-medium
-                    </td>
-                    <td className="py-3.5 px-4 text-text font-medium">Sedang (Seimbang)</td>
-                    <td className="py-3.5 px-4 font-mono text-text-muted">500k / 64k</td>
-                    <td className="py-3.5 px-4 text-text-muted">
-                      Kecepatan dan penalaran proporsional (4-5 detik). Analisis dokumen, ekstraksi data, dan riset teks.
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 px-4 font-mono font-medium text-accent-dark">
-                      muara-v1-flash-high
-                    </td>
-                    <td className="py-3.5 px-4 text-text font-medium">Tinggi (Mendalam)</td>
-                    <td className="py-3.5 px-4 font-mono text-text-muted">500k / 64k</td>
-                    <td className="py-3.5 px-4 text-text-muted">
-                      Penalaran penuh tanpa kompromi. Pemecahan logika rumit, coding arsitektur besar, dan audit kode sistem.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        {/* Rate Limits per Role Table */}
-        <section className="py-16 sm:py-20 border-t border-white/10">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <div className="text-center max-w-xl mx-auto mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-text">
-                Batas Penggunaan Berdasarkan Peran
-              </h2>
-              <p className="mt-2 text-xs sm:text-sm text-text-muted">
-                Kuota otomatis diberikan berdasarkan status keanggotaan aktif Anda di komunitas
-              </p>
-            </div>
-
-            <div className="overflow-x-auto rounded-xl border border-stroke bg-surface-solid">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-b border-stroke bg-surface text-text-muted">
-                    <th className="py-3 px-4 font-semibold">Peran Komunitas</th>
-                    <th className="py-3 px-4 font-semibold">Batas / Menit</th>
-                    <th className="py-3 px-4 font-semibold">Batas / 5 Jam</th>
-                    <th className="py-3 px-4 font-semibold">Keterangan</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  <tr className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 px-4 font-medium text-text">
-                      <span className="inline-block rounded bg-background border border-stroke px-2 py-0.5 text-xs font-mono text-text">
-                        contributor
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4 font-mono text-accent-dark font-medium">10 request</td>
-                    <td className="py-3.5 px-4 font-mono text-accent-dark font-medium">150 request</td>
-                    <td className="py-3.5 px-4 text-xs text-text-muted">Anggota biasa, proyek kuliah & eksplorasi</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 px-4 font-medium text-text">
-                      <span className="inline-block rounded bg-background border border-stroke px-2 py-0.5 text-xs font-mono text-text">
-                        head
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4 font-mono text-accent-dark font-medium">20 request</td>
-                    <td className="py-3.5 px-4 font-mono text-accent-dark font-medium">300 request</td>
-                    <td className="py-3.5 px-4 text-xs text-text-muted">Ketua divisi (Builder / Creative)</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 px-4 font-medium text-text">
-                      <span className="inline-block rounded bg-background border border-stroke px-2 py-0.5 text-xs font-mono text-text">
-                        lead
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4 font-mono text-accent-dark font-medium">40 request</td>
-                    <td className="py-3.5 px-4 font-mono text-accent-dark font-medium">600 request</td>
-                    <td className="py-3.5 px-4 text-xs text-text-muted">Lead project & koordinator inisiatif</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 px-4 font-medium text-text">
-                      <span className="inline-block rounded bg-accent/20 border border-stroke px-2 py-0.5 text-xs font-mono text-on-accent font-semibold">
-                        maintainer
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4 font-mono text-accent-dark font-bold">80 request</td>
-                    <td className="py-3.5 px-4 font-mono text-accent-dark font-bold">1.200 request</td>
-                    <td className="py-3.5 px-4 text-xs text-text-muted">Pengurus inti & pengelola infrastruktur</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        {/* Quickstart Section */}
-        <section id="quickstart" className="border-b border-stroke py-16 sm:py-20">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 space-y-6">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-text">
-                Contoh Pemanggilan Cepat
-              </h2>
-              <p className="mt-1 text-xs sm:text-sm text-text-muted">
-                Dapat langsung digunakan pada pustaka OpenAI resmi tanpa instalasi SDK tambahan
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-stroke bg-code-bg p-5 font-mono text-xs text-code-text overflow-x-auto shadow-lg">
-              <pre className="leading-relaxed">
-                <code>{`from openai import OpenAI
+const quickstartCode = `from openai import OpenAI
 
 client = OpenAI(
     base_url="https://api.muaraai.com/v1/ai",
@@ -257,43 +25,196 @@ response = client.chat.completions.create(
 
 for chunk in response:
     print(chunk.choices[0].delta.content or "", end="", flush=True)
-print()`}</code>
-              </pre>
-            </div>
+print()`;
+
+const stats = [
+  { value: "500k", label: "Jendela konteks token" },
+  { value: "64k", label: "Maksimal token keluaran" },
+  { value: "<80ms", label: "Overhead edge gateway" },
+  { value: "Zero log", label: "Prompt tidak pernah disimpan" },
+];
+
+const models = [
+  {
+    id: "muara-v1-flash-low",
+    tier: "Rendah · 2–3 dtk",
+    description: "Latensi terendah. Percakapan interaktif, perangkuman, dan otomatisasi skrip ringan.",
+  },
+  {
+    id: "muara-v1-flash-medium",
+    tier: "Seimbang · 4–5 dtk",
+    description: "Kecepatan dan penalaran proporsional. Analisis dokumen, ekstraksi data, dan riset teks.",
+  },
+  {
+    id: "muara-v1-flash-high",
+    tier: "Mendalam · penuh",
+    description: "Penalaran penuh tanpa kompromi. Logika rumit, coding arsitektur besar, dan audit kode sistem.",
+    highlight: true,
+  },
+];
+
+const roles = [
+  { role: "Contributor", note: "Anggota biasa, proyek kuliah & eksplorasi", perMinute: "10", perWindow: "150" },
+  { role: "Head", note: "Ketua divisi Builder / Creative", perMinute: "20", perWindow: "300" },
+  { role: "Lead", note: "Lead project & koordinator inisiatif", perMinute: "40", perWindow: "600" },
+  { role: "Maintainer", note: "Pengurus inti & pengelola infrastruktur", perMinute: "80", perWindow: "1.200", highlight: true },
+];
+
+function ArrowUpRight() {
+  return (
+    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <div className="relative isolate flex min-h-screen flex-col">
+      {/* Scrolling carries the reader downstream: river at the hero, open sea at the footer. */}
+      <FlowField from={0} to={1} quietTop />
+      <JourneyRail />
+      <Navbar />
+
+      <main className="flex-1 overflow-x-hidden">
+        {/* Hero */}
+        <section className="container-page grid items-center gap-9 pb-24 pt-10 sm:pt-15 lg:grid-cols-2">
+          <div className="relative z-10 flex flex-col gap-7.5">
+            <Reveal>
+              <span className="eyebrow">Muara V1 Flash Gateway</span>
+            </Reveal>
+            <Reveal delay={80}>
+              <h1 className="text-display">Setiap aliran ide bermuara di sini.</h1>
+            </Reveal>
+            <Reveal delay={160} className="flex flex-col gap-7.5">
+              <p className="max-w-[480px] text-body font-extralight">
+                Gateway AI komunitas MuaraAI: satu endpoint berformat OpenAI API menuju model penalaran mutakhir. Disediakan khusus bagi mahasiswa FTI UBSI Pontianak untuk riset, karya, dan inovasi tanpa biaya.
+              </p>
+              <div className="flex flex-wrap items-center gap-7.5">
+                <Link href="/login" className="btn-primary">
+                  Buat Kunci API
+                </Link>
+                <a href="https://github.com/MuaraAI" target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                  GitHub Org
+                  <ArrowUpRight />
+                </a>
+              </div>
+              <CopyEndpoint />
+            </Reveal>
           </div>
+
+          <Estuary className="aspect-[5/4] w-full" />
         </section>
 
-        {/* Community Info Banner */}
-        <section className="py-16 sm:py-20 bg-surface-solid/30">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <div className="rounded-2xl border border-stroke bg-surface-solid p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="space-y-1.5 max-w-xl">
-                <h3 className="text-base sm:text-lg font-bold text-text">
-                  Komunitas MuaraAI
-                </h3>
-                <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
-                  MuaraAI adalah wadah komunitas mahasiswa Fakultas Teknik dan Informatika UBSI Pontianak yang berfokus pada kolaborasi praktis rekayasa perangkat lunak dan kecerdasan buatan.
-                </p>
-              </div>
+        {/* Key figures */}
+        <section aria-label="Spesifikasi utama" className="container-page pb-30">
+          <dl className="grid grid-cols-2 gap-9 lg:grid-cols-4">
+            {stats.map((s, i) => (
+              <Reveal key={s.label} delay={i * 90} className="flex flex-col-reverse gap-1.5">
+                <dt className="text-sm text-ash">{s.label}</dt>
+                <dd className="text-[clamp(2.25rem,4vw,3rem)] leading-[1.1] tracking-[-0.035em]">{s.value}</dd>
+              </Reveal>
+            ))}
+          </dl>
+        </section>
 
-              <div className="flex items-center gap-3 shrink-0">
-                <a
-                  href="https://muaraai.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-lg border border-stroke bg-surface-hover px-4 py-2 text-xs font-medium text-text hover:text-white transition-colors"
-                >
-                  Portal Komunitas
-                </a>
-                <Link
-                  href="/login"
-                  className="rounded-lg bg-accent px-4 py-2 text-xs font-semibold text-on-accent hover:bg-accent-hover transition-colors"
-                >
-                  Masuk Sekarang
-                </Link>
-              </div>
+        {/* Models */}
+        <section id="models" className="container-page grid items-start gap-15 pb-30 lg:grid-cols-2">
+          <Reveal className="flex flex-col gap-6">
+            <span className="eyebrow">Model</span>
+            <h2 className="text-heading-lg">Tiga tingkat penalaran. Satu endpoint.</h2>
+            <p className="max-w-[440px] text-body font-extralight text-mist">
+              Pilih kedalaman berpikir sesuai tugas. Semua tingkat berbagi jendela konteks 500k dan keluaran 64k token, melalui protokol OpenAI REST + SSE.
+            </p>
+          </Reveal>
+
+          <ol className="border-b border-line">
+            {models.map((m, i) => (
+              <li key={m.id} className="border-t border-line">
+                <Reveal delay={i * 110} className="grid grid-cols-[48px_minmax(0,1fr)] gap-4.5 py-7.5">
+                  <span className="pt-1 font-mono text-sm text-ash">{String(i + 1).padStart(2, "0")}</span>
+                  <div className="flex flex-col gap-2.5">
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4.5 gap-y-1.5">
+                      <code className="font-mono text-lg text-bone">{m.id}</code>
+                      <span className={`label ${m.highlight ? "text-saffron" : ""}`}>{m.tier}</span>
+                    </div>
+                    <p className="text-base font-extralight leading-relaxed text-mist">{m.description}</p>
+                  </div>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* Rate limits — zigzag: data left, copy right */}
+        <section className="container-page grid items-start gap-15 pb-30 lg:grid-cols-2">
+          <Reveal className="flex flex-col gap-6 lg:order-2">
+            <span className="eyebrow">Batas penggunaan</span>
+            <h2 className="text-heading-lg">Kuota mengikuti peran Anda.</h2>
+            <p className="max-w-[440px] text-body font-extralight text-mist">
+              Batas request diberikan otomatis berdasarkan status keanggotaan aktif Anda di komunitas.
+            </p>
+          </Reveal>
+
+          <Reveal delay={120} className="lg:order-1">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="label">
+                  <th scope="col" className="pb-3 font-semibold">Peran</th>
+                  <th scope="col" className="pb-3 font-semibold">Per menit</th>
+                  <th scope="col" className="pb-3 font-semibold">Per 5 jam</th>
+                </tr>
+              </thead>
+              <tbody className="border-b border-line">
+                {roles.map((r) => (
+                  <tr key={r.role} className="border-t border-line align-baseline">
+                    <th scope="row" className="py-6 pr-4.5 font-normal">
+                      <span className={`block text-heading-2xs ${r.highlight ? "text-saffron" : ""}`}>{r.role}</span>
+                      <span className="mt-1 block text-sm font-extralight text-ash">{r.note}</span>
+                    </th>
+                    <td className="py-6 pr-4.5 font-mono text-lg">{r.perMinute}</td>
+                    <td className="py-6 font-mono text-lg">{r.perWindow}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Reveal>
+        </section>
+
+        {/* Quickstart */}
+        <section id="quickstart" className="container-page grid items-center gap-15 pb-30 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+          <Reveal className="flex flex-col gap-6">
+            <span className="eyebrow">Quickstart</span>
+            <h2 className="text-heading-lg">Langsung jalan di SDK OpenAI.</h2>
+            <p className="max-w-[420px] text-body font-extralight text-mist">
+              Ganti base URL dan kunci API. Dapat langsung digunakan pada pustaka OpenAI resmi tanpa instalasi SDK tambahan.
+            </p>
+          </Reveal>
+
+          <Reveal delay={120} className="min-w-0">
+            <CodeBlock code={quickstartCode} />
+          </Reveal>
+        </section>
+
+        {/* Community */}
+        <section className="container-page pb-30 pt-15">
+          <Reveal className="flex flex-col gap-7.5">
+            <span className="eyebrow">Komunitas MuaraAI</span>
+            <h2 className="max-w-[1000px] text-display">Dibangun mahasiswa, untuk mahasiswa.</h2>
+            <p className="max-w-[560px] text-body font-extralight">
+              MuaraAI adalah wadah komunitas mahasiswa Fakultas Teknik dan Informatika UBSI Pontianak yang berfokus pada kolaborasi praktis rekayasa perangkat lunak dan kecerdasan buatan.
+            </p>
+            <div className="flex flex-wrap gap-7.5">
+              <a href="https://muaraai.com" target="_blank" rel="noopener noreferrer" className="btn-ghost">
+                Portal Komunitas
+                <ArrowUpRight />
+              </a>
+              <Link href="/login" className="btn-ghost text-ash">
+                Masuk sekarang
+                <span className="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
+              </Link>
             </div>
-          </div>
+          </Reveal>
         </section>
       </main>
 
