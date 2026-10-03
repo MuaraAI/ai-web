@@ -1,0 +1,37 @@
+# dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# next.js
+.next/
+out/
+build/
+dist/
+
+# environment files (STRICT: never commit real secrets)
+.env
+.env*.local
+.env.local
+.env.production
+.env.development
+.dev.vars
+.dev.vars.local
+
+# typescript
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# OS & debug logs
+.DS_Store
+*.pem
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.superpowers/
+docs/superpowers/
+docs/prd/
+docs/
+
+# internal tool artifacts (local-only)
+graphify-out/
