@@ -36,58 +36,43 @@ export default function LoginPage() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-text">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
 
-      <main className="flex flex-1 items-center justify-center px-4 py-16 sm:px-6">
-        <div className="w-full max-w-sm rounded-2xl border border-stroke bg-surface-solid p-6 sm:p-8 shadow-xl">
-          <div className="text-center mb-6">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-surface border border-stroke text-accent-dark mb-3 shadow-sm">
-              <svg
-                className="h-6 w-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M4 19V5l8 7 8-7v14" />
-              </svg>
-            </div>
-            <h1 className="text-xl font-bold tracking-tight text-text">
-              Masuk ke Muara AI
-            </h1>
-            <p className="mt-1 text-xs text-text-muted">
-              Gunakan akun terdaftar anggota komunitas Anda
-            </p>
-          </div>
+      <main className="flex flex-1 items-center justify-center px-6 pb-30 pt-15">
+        <div className="flex w-full max-w-[480px] flex-col gap-7.5">
+          <span className="eyebrow">Login with MuaraAI</span>
+          <h1 className="text-heading-lg">Masuk ke Muara AI.</h1>
+          <p className="text-body font-extralight text-mist">
+            Gunakan akun GitHub yang terdaftar sebagai anggota komunitas. Sesi berlaku di seluruh subdomain muaraai.com.
+          </p>
 
           {authError && (
-            <div className="mb-4 rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-xs text-red-500">
+            <p role="alert" className="text-sm text-ember">
               Autentikasi gagal atau tautan sesi telah kedaluwarsa. Silakan coba masuk kembali.
-            </div>
+            </p>
           )}
 
           {checkingSession ? (
-            <div className="py-8 text-center text-xs text-text-muted">
+            <p className="flex min-h-[48px] items-center gap-2 text-sm text-ash">
+              <span className="material-symbols-rounded animate-spin" aria-hidden="true">progress_activity</span>
               Memeriksa sesi login...
-            </div>
+            </p>
           ) : (
             <LoginButton />
           )}
 
-          <div className="mt-6 border-t border-stroke pt-4 text-center text-[11px] text-text-muted leading-relaxed">
+          <p className="border-t border-line pt-7.5 text-sm font-extralight text-ash">
             Belum terdaftar sebagai anggota komunitas?{" "}
             <a
               href="https://muaraai.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent-dark font-medium underline hover:text-accent-dark/80 transition-colors"
+              className="font-normal text-saffron underline-offset-4 hover:underline"
             >
               Daftar keanggotaan
             </a>
-          </div>
+          </p>
         </div>
       </main>
 

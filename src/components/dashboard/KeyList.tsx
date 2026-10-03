@@ -50,73 +50,67 @@ export function KeyList({ keys, loading, onRefresh }: KeyListProps) {
   };
 
   return (
-    <div className="rounded-xl border border-stroke bg-surface-solid p-5 sm:p-6 shadow-sm space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-rounded text-accent-dark text-lg">vpn_key</span>
-          <h3 className="text-sm font-bold text-text">Daftar Kunci API Anda</h3>
-        </div>
-        <button
-          type="button"
-          onClick={onRefresh}
-          disabled={loading}
-          className="inline-flex items-center gap-1 rounded-lg border border-stroke bg-surface px-2.5 py-1 text-[11px] font-medium text-text-muted transition-colors hover:text-text disabled:opacity-50"
-        >
-          <span className={`material-symbols-rounded text-xs ${loading ? "animate-spin" : ""}`}>
+    <section aria-labelledby="keys-title" className="flex flex-col gap-7.5">
+      <div className="flex flex-wrap items-baseline justify-between gap-4.5">
+        <h2 id="keys-title" className="text-heading-sm">
+          Kunci Anda
+        </h2>
+        <button type="button" onClick={onRefresh} disabled={loading} className="btn-ghost text-ash hover:text-bone">
+          <span className={`material-symbols-rounded ${loading ? "animate-spin" : ""}`} aria-hidden="true">
             sync
           </span>
-          <span>Perbarui</span>
+          Perbarui
         </button>
       </div>
 
       {errorMessage && (
-        <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-xs text-red-500">
+        <p role="alert" className="text-sm text-ember">
           {errorMessage}
-        </div>
+        </p>
       )}
 
       {loading && keys.length === 0 ? (
-        <div className="py-8 text-center text-xs text-text-muted">Memuat daftar kunci...</div>
+        <p className="border-y border-line py-7.5 text-base font-extralight text-ash">Memuat daftar kunci...</p>
       ) : keys.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-stroke p-6 text-center text-xs text-text-muted">
-          Belum ada kunci API. Buat kunci pertama Anda melalui panel pembuatan di atas.
-        </div>
+        <p className="border-y border-line py-7.5 text-base font-extralight text-mist">
+          Belum ada kunci API. Buat kunci pertama Anda melalui formulir di atas.
+        </p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full min-w-[560px] text-left text-[15px]">
             <thead>
-              <tr className="border-b border-stroke text-text-muted">
-                <th className="pb-2.5 font-medium">Nama</th>
-                <th className="pb-2.5 font-medium">Prefix Kunci</th>
-                <th className="pb-2.5 font-medium">Status</th>
-                <th className="pb-2.5 font-medium hidden sm:table-cell">Dibuat</th>
-                <th className="pb-2.5 font-medium hidden md:table-cell">Terakhir Digunakan</th>
-                <th className="pb-2.5 font-medium text-right">Aksi</th>
+              <tr className="label">
+                <th scope="col" className="pb-3 pr-4.5 font-semibold">Nama</th>
+                <th scope="col" className="pb-3 pr-4.5 font-semibold">Prefix</th>
+                <th scope="col" className="pb-3 pr-4.5 font-semibold">Status</th>
+                <th scope="col" className="hidden pb-3 pr-4.5 font-semibold sm:table-cell">Dibuat</th>
+                <th scope="col" className="hidden pb-3 pr-4.5 font-semibold md:table-cell">Terakhir dipakai</th>
+                <th scope="col" className="pb-3 text-right font-semibold">
+                  <span className="sr-only">Aksi</span>
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stroke/60">
+            <tbody className="border-b border-line">
               {keys.map((k) => (
-                <tr key={k.id} className="group transition-colors hover:bg-surface-hover/40">
-                  <td className="py-3 font-medium text-text">{k.name}</td>
-                  <td className="py-3 font-mono text-text-muted">
-                    <span className="text-accent-dark font-medium">{k.key_prefix}</span>••••••••
+                <tr key={k.id} className={`border-t border-line ${k.is_active ? "" : "text-ash"}`}>
+                  <td className="py-6 pr-4.5">{k.name}</td>
+                  <td className="py-6 pr-4.5 font-mono text-sm">
+                    {k.key_prefix}
+                    <span className="text-ash">••••••••</span>
                   </td>
-                  <td className="py-3">
-                    {k.is_active ? (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-600">
-                        <span className="h-1 w-1 rounded-full bg-emerald-500" />
-                        Aktif
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-red-500/20 bg-red-500/10 px-2 py-0.5 text-[10px] font-medium text-red-500">
-                        Dicabut
-                      </span>
-                    )}
+                  <td className="py-6 pr-4.5">
+                    <span className="inline-flex items-center gap-2">
+                      <span
+                        className={`h-2 w-2 rounded-pill ${k.is_active ? "bg-verdant" : "border border-ash"}`}
+                        aria-hidden="true"
+                      />
+                      {k.is_active ? "Aktif" : "Dicabut"}
+                    </span>
                   </td>
-                  <td className="py-3 text-text-muted hidden sm:table-cell">
+                  <td className="hidden py-6 pr-4.5 font-extralight sm:table-cell">
                     {new Date(k.created_at).toLocaleDateString("id-ID")}
                   </td>
-                  <td className="py-3 text-text-muted hidden md:table-cell">
+                  <td className="hidden py-6 pr-4.5 font-extralight md:table-cell">
                     {k.last_used_at
                       ? new Date(k.last_used_at).toLocaleDateString("id-ID", {
                           hour: "2-digit",
@@ -124,13 +118,13 @@ export function KeyList({ keys, loading, onRefresh }: KeyListProps) {
                         })
                       : "Belum pernah"}
                   </td>
-                  <td className="py-3 text-right">
+                  <td className="py-6 text-right">
                     {k.is_active && (
                       <button
                         type="button"
                         onClick={() => handleRevoke(k.id)}
                         disabled={revokingId === k.id}
-                        className="rounded px-2.5 py-1 text-[11px] font-medium text-red-500 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                        className="btn-ghost text-ember hover:text-bone"
                       >
                         {revokingId === k.id ? "Mencabut..." : "Cabut"}
                       </button>
@@ -142,6 +136,6 @@ export function KeyList({ keys, loading, onRefresh }: KeyListProps) {
           </table>
         </div>
       )}
-    </div>
+    </section>
   );
 }

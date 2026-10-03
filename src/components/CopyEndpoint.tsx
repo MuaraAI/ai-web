@@ -20,19 +20,14 @@ export function CopyEndpoint({
   };
 
   return (
-    <div className="inline-flex flex-wrap items-center gap-2 rounded-lg border border-stroke bg-surface-solid px-3 py-1.5 font-mono text-xs shadow-sm">
-      <span className="font-semibold text-accent-dark">BASE URL</span>
-      <span className="text-text select-all font-medium">{url}</span>
-      <button
-        type="button"
-        onClick={handleCopy}
-        className="inline-flex items-center gap-1 rounded border border-stroke bg-background px-2 py-0.5 text-[11px] font-sans font-medium text-text-muted hover:text-text hover:border-accent-dark/40 transition-colors"
-        title="Salin Base URL"
-      >
-        <span className="material-symbols-rounded text-xs">
+    <div className="flex flex-wrap items-center gap-x-4.5 gap-y-1">
+      <span className="label">Base URL</span>
+      <code className="select-all break-all font-mono text-[15px] text-bone">{url}</code>
+      <button type="button" onClick={handleCopy} className="btn-quiet" aria-label="Salin Base URL">
+        <span className="material-symbols-rounded" aria-hidden="true">
           {copied ? "check" : "content_copy"}
         </span>
-        <span>{copied ? "Tersalin" : "Salin"}</span>
+        <span aria-live="polite">{copied ? "Tersalin" : "Salin"}</span>
       </button>
     </div>
   );

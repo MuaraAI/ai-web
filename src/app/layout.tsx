@@ -9,7 +9,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#eef1f6",
+  themeColor: "#000000",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -19,17 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className="bg-background text-text antialiased selection:bg-accent selection:text-accent-dark relative min-h-screen">
-        {/* Ambient floating glass blobs & grid overlay */}
-        <div className="ambient-bg" aria-hidden="true">
-          <div className="ambient-blob ambient-blob-1" />
-          <div className="ambient-blob ambient-blob-2" />
-          <div className="ambient-blob ambient-blob-3" />
-          <div className="grid-overlay" />
-        </div>
-
-        {children}
-      </body>
+      <body className="min-h-screen bg-void text-bone antialiased">{children}</body>
     </html>
   );
 }

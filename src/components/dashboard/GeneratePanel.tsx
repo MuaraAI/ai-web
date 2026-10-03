@@ -78,65 +78,67 @@ export function GeneratePanel({
   };
 
   return (
-    <div className="rounded-xl border border-stroke bg-surface-solid p-5 sm:p-6 shadow-sm space-y-4">
-      <div className="flex items-center gap-2">
-        <span className="material-symbols-rounded text-accent-dark text-lg">add_circle</span>
-        <h3 className="text-sm font-bold text-text">
-          {hasActiveKey ? "Buat Ulang Kunci API (Regenerate)" : "Buat Kunci API Baru"}
-        </h3>
+    <section className="grid items-start gap-15 lg:grid-cols-2">
+      <div className="flex flex-col gap-6">
+        <span className="eyebrow">Kunci API</span>
+        <h2 className="text-heading-sm">{hasActiveKey ? "Buat ulang kunci API." : "Buat kunci API baru."}</h2>
+        <p className="max-w-[440px] text-body font-extralight text-mist">
+          Kunci dibuat di browser Anda dan hanya ditampilkan sekali. Server hanya menyimpan hash SHA-256.
+        </p>
       </div>
 
-      {errorMessage && (
-        <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-xs text-red-500">
-          {errorMessage}
-        </div>
-      )}
-
-      <form onSubmit={handleGenerate} className="space-y-4">
-        <div>
-          <label className="block text-xs text-text-muted mb-1 font-medium">
-            Nama Kunci / Deskripsi
+      <form onSubmit={handleGenerate} className="flex flex-col gap-6">
+        <div className="flex flex-col gap-3">
+          <label htmlFor="key-name" className="label">
+            Nama kunci / deskripsi
           </label>
           <input
+            id="key-name"
             type="text"
             value={keyName}
             onChange={(e) => setKeyName(e.target.value)}
             placeholder="Misal: Proyek AI Kuliah"
             maxLength={40}
-            className="w-full sm:max-w-xs rounded-lg border border-stroke bg-background px-3.5 py-2 text-xs sm:text-sm text-text placeholder:text-text-muted focus:border-accent-dark focus:outline-none focus:ring-1 focus:ring-accent-dark"
+            className="field max-w-[420px]"
           />
         </div>
 
         {hasActiveKey && (
-          <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 p-3.5 text-xs text-amber-900 space-y-2">
-            <p className="leading-relaxed">
-              Anda telah memiliki kunci API yang aktif. Aturan sistem mengizinkan <strong>1 kunci aktif per anggota</strong>. Membuat kunci baru akan langsung menonaktifkan kunci lama Anda.
+          <div className="flex flex-col gap-3">
+            <p className="max-w-[520px] text-[15px] font-extralight leading-relaxed text-mist">
+              <strong className="font-semibold text-saffron">1 kunci aktif per anggota.</strong> Membuat kunci baru akan langsung menonaktifkan kunci lama Anda.
             </p>
-            <label className="flex items-center gap-2 cursor-pointer pt-1 text-text">
+            <label className="flex min-h-[44px] cursor-pointer items-center gap-3 text-[15px]">
               <input
                 type="checkbox"
                 checked={confirmRegenerate}
                 onChange={(e) => setConfirmRegenerate(e.target.checked)}
-                className="rounded border-stroke bg-background text-accent-dark focus:ring-accent-dark h-4 w-4"
+                className="h-[18px] w-[18px] accent-iris"
               />
-              <span className="text-[11px] font-medium">
-                Saya mengerti dan setuju untuk mencabut kunci lama
-              </span>
+              Saya mengerti dan setuju untuk mencabut kunci lama
             </label>
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={isGenerating || (hasActiveKey && !confirmRegenerate)}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent border border-stroke px-4 py-2.5 text-xs sm:text-sm font-semibold text-on-accent transition-all hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent-dark shadow-sm disabled:opacity-50"
-        >
-          <span className="material-symbols-rounded text-sm">
-            {isGenerating ? "hourglass_empty" : "key"}
-          </span>
-          <span>{isGenerating ? "Memproses..." : hasActiveKey ? "Buat Ulang Kunci" : "Buat Kunci API"}</span>
-        </button>
+        {errorMessage && (
+          <p role="alert" className="text-sm text-ember">
+            {errorMessage}
+          </p>
+        )}
+
+        <div>
+          <button
+            type="submit"
+            disabled={isGenerating || (hasActiveKey && !confirmRegenerate)}
+            className="btn-primary"
+          >
+            <span className="material-symbols-rounded" aria-hidden="true">
+              {isGenerating ? "hourglass_empty" : "key"}
+            </span>
+            {isGenerating ? "Memproses..." : hasActiveKey ? "Buat ulang kunci" : "Buat kunci API"}
+          </button>
+        </div>
       </form>
-    </div>
+    </section>
   );
 }
