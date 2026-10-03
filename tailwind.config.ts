@@ -49,7 +49,8 @@ const config: Config = {
         page: "1280px",
       },
       borderRadius: {
-        card: "24px",
+        button: "10px",
+        card: "16px",
         pill: "9999px",
       },
       transitionTimingFunction: {

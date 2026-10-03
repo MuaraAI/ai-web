@@ -6,6 +6,8 @@ import { getSupabase } from "@/lib/supabase";
 import { LoginButton } from "@/components/LoginButton";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { FlowField } from "@/components/FlowField";
+import { Reveal } from "@/components/Reveal";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,11 +38,13 @@ export default function LoginPage() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative isolate flex min-h-screen flex-col">
+      {/* The login gate sits at the river mouth. */}
+      <FlowField from={0.45} to={0.6} />
       <Navbar />
 
       <main className="flex flex-1 items-center justify-center px-6 pb-30 pt-15">
-        <div className="flex w-full max-w-[480px] flex-col gap-7.5">
+        <Reveal className="flex w-full max-w-[480px] flex-col gap-7.5">
           <span className="eyebrow">Login with MuaraAI</span>
           <h1 className="text-heading-lg">Masuk ke Muara AI.</h1>
           <p className="text-body font-extralight text-mist">
@@ -73,7 +77,7 @@ export default function LoginPage() {
               Daftar keanggotaan
             </a>
           </p>
-        </div>
+        </Reveal>
       </main>
 
       <Footer />

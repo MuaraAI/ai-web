@@ -111,9 +111,29 @@ body {
   border-radius: 4px;
 }
 
+/* Scroll reveal — content rises out of the current as it enters the viewport */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
@@ -134,7 +154,7 @@ body {
 
   /* The single filled action per view */
   .btn-primary {
-    @apply inline-flex min-h-[46px] items-center justify-center gap-2.5 rounded-pill bg-iris px-[22px] text-label font-semibold uppercase text-bone transition-colors duration-200 ease-out hover:bg-iris-hover disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-iris;
+    @apply inline-flex min-h-[46px] items-center justify-center gap-2.5 rounded-button bg-iris px-[22px] text-label font-semibold uppercase text-bone transition-colors duration-200 ease-out hover:bg-iris-hover disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-iris;
   }
 
   /* Containerless text action */
@@ -147,10 +167,10 @@ body {
   }
 
   .field {
-    @apply min-h-[48px] w-full rounded-pill border border-line-strong bg-void px-5 text-base text-bone transition-colors placeholder:text-ash hover:border-ash focus:border-iris focus:outline-none;
+    @apply min-h-[48px] w-full rounded-button border border-line-strong bg-void px-5 text-base text-bone transition-colors placeholder:text-ash hover:border-ash focus:border-iris focus:outline-none;
   }
 
   .code-block {
-    @apply overflow-x-auto rounded-card border border-line p-6 font-mono text-sm leading-[1.7] text-mist sm:p-[30px];
+    @apply overflow-x-auto rounded-card border border-line bg-void p-6 font-mono text-sm leading-[1.7] text-mist sm:p-[30px];
   }
 }

@@ -10,12 +10,16 @@ import { KeyList, type ApiKeyItem } from "@/components/dashboard/KeyList";
 import { CodeExamples } from "@/components/dashboard/CodeExamples";
 import { ViewOnceModal } from "@/components/ViewOnceModal";
 import { CopyEndpoint } from "@/components/CopyEndpoint";
+import { FlowField } from "@/components/FlowField";
+import { Reveal } from "@/components/Reveal";
 import { loadMember, type GuardResult } from "@/lib/guard";
 import { DB, getSupabase } from "@/lib/supabase";
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative isolate flex min-h-screen flex-col">
+      {/* Members work out at sea: wide, calm swell that deepens as they scroll. */}
+      <FlowField from={0.8} to={1} />
       <Navbar />
       {children}
       <Footer />
@@ -36,11 +40,11 @@ function StatusNotice({
 }) {
   return (
     <main className="flex flex-1 items-center justify-center px-6 pb-30 pt-15">
-      <div className="flex w-full max-w-[560px] flex-col gap-6">
+      <Reveal className="flex w-full max-w-[560px] flex-col gap-6">
         <span className={`eyebrow ${eyebrowClass}`}>{eyebrow}</span>
         <h1 className="text-heading-sm">{title}</h1>
         {children}
-      </div>
+      </Reveal>
     </main>
   );
 }
@@ -162,7 +166,7 @@ export default function DashboardPage() {
       <main className="flex-1">
         <div className="container-page flex flex-col gap-24 pb-30 pt-10 sm:gap-30 sm:pt-15">
           {/* Greeting */}
-          <section className="flex flex-wrap items-end justify-between gap-9">
+          <Reveal className="flex flex-wrap items-end justify-between gap-9">
             <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-6">
               <span className="eyebrow">
                 Dashboard anggota · <span className="capitalize">{guardState.member.hierarchy}</span>
@@ -173,21 +177,29 @@ export default function DashboardPage() {
               <CopyEndpoint />
               {logoutButton}
             </div>
-          </section>
+          </Reveal>
 
-          <QuotaBar />
+          <Reveal>
+            <QuotaBar />
+          </Reveal>
 
-          <GeneratePanel
-            userId={guardState.member.id}
-            hasActiveKey={Boolean(activeKey)}
-            activeKeyId={activeKey?.id}
-            onKeyCreated={(raw) => setViewOnceKey(raw)}
-            onRefresh={fetchKeys}
-          />
+          <Reveal>
+            <GeneratePanel
+              userId={guardState.member.id}
+              hasActiveKey={Boolean(activeKey)}
+              activeKeyId={activeKey?.id}
+              onKeyCreated={(raw) => setViewOnceKey(raw)}
+              onRefresh={fetchKeys}
+            />
+          </Reveal>
 
-          <KeyList keys={keys} loading={loadingKeys} onRefresh={fetchKeys} />
+          <Reveal>
+            <KeyList keys={keys} loading={loadingKeys} onRefresh={fetchKeys} />
+          </Reveal>
 
-          <CodeExamples />
+          <Reveal>
+            <CodeExamples />
+          </Reveal>
         </div>
       </main>
 
