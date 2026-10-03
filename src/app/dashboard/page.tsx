@@ -10,7 +10,7 @@ import { KeyList, type ApiKeyItem } from "@/components/dashboard/KeyList";
 import { CodeExamples } from "@/components/dashboard/CodeExamples";
 import { ViewOnceModal } from "@/components/ViewOnceModal";
 import { CopyEndpoint } from "@/components/CopyEndpoint";
-import { ShapeField } from "@/components/ShapeField";
+import { FlowField } from "@/components/FlowField";
 import { Reveal } from "@/components/Reveal";
 import { loadMember, type GuardResult } from "@/lib/guard";
 import { DB, getSupabase } from "@/lib/supabase";
@@ -18,8 +18,8 @@ import { DB, getSupabase } from "@/lib/supabase";
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative isolate flex min-h-screen flex-col">
-      {/* Quiet background: each dashboard block calls up its own shape (bars, key, code). */}
-      <ShapeField fallback="stream" subtle />
+      {/* Members work out at sea: calm swell, with a pass by the mouth at key creation. */}
+      <FlowField fallback="sea" />
       <Navbar />
       {children}
       <Footer />
@@ -114,7 +114,7 @@ export default function DashboardPage() {
     return (
       <Shell>
         <main className="flex flex-1 items-center justify-center p-6">
-          <p className="flex items-center gap-2 text-sm text-muted">
+          <p className="flex items-center gap-2 text-sm text-ash">
             <span className="material-symbols-rounded animate-spin text-iris" aria-hidden="true">
               progress_activity
             </span>
@@ -130,7 +130,7 @@ export default function DashboardPage() {
     return (
       <Shell>
         <StatusNotice eyebrow="Menunggu persetujuan" title="Pendaftaran sedang ditinjau.">
-          <p className="text-body font-extralight text-soft">
+          <p className="text-body font-extralight text-mist">
             Akun Anda telah terdaftar, namun status keanggotaan Anda masih dalam tahap peninjauan oleh pengurus komunitas MuaraAI.
           </p>
           <div className="flex flex-wrap items-center gap-7.5">
@@ -149,7 +149,7 @@ export default function DashboardPage() {
     return (
       <Shell>
         <StatusNotice eyebrow="Akses ditolak" eyebrowClass="text-ember" title="Akses belum disetujui.">
-          <p className="text-body font-extralight text-soft">
+          <p className="text-body font-extralight text-mist">
             Mohon maaf, status keanggotaan Anda belum disetujui untuk mengakses gateway AI komunitas ini. Silakan hubungi pengurus divisi Anda.
           </p>
           <div>{logoutButton}</div>
@@ -179,11 +179,11 @@ export default function DashboardPage() {
             </div>
           </Reveal>
 
-          <Reveal formation="bars">
+          <Reveal scene="sea">
             <QuotaBar />
           </Reveal>
 
-          <Reveal formation="key">
+          <Reveal scene="mouth">
             <GeneratePanel
               userId={guardState.member.id}
               hasActiveKey={Boolean(activeKey)}
@@ -193,11 +193,11 @@ export default function DashboardPage() {
             />
           </Reveal>
 
-          <Reveal formation="key">
+          <Reveal scene="sea">
             <KeyList keys={keys} loading={loadingKeys} onRefresh={fetchKeys} />
           </Reveal>
 
-          <Reveal formation="code">
+          <Reveal scene="deep">
             <CodeExamples />
           </Reveal>
         </div>

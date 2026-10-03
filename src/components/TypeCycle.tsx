@@ -48,14 +48,14 @@ export function TypeCycle({ words, className = "" }: { words: string[]; classNam
   }, [words]);
 
   return (
-    <span aria-hidden="true" className="inline-grid align-baseline">
+    <span aria-hidden="true" className={`inline-grid align-baseline ${className}`}>
       {words.map((w) => (
         <span key={w} className="invisible col-start-1 row-start-1 pr-[0.12em]">
           {w}
         </span>
       ))}
       <span className="col-start-1 row-start-1 whitespace-nowrap">
-        <span className={className}>{text}</span>
+        {text}
         <span className="type-caret" />
       </span>
     </span>

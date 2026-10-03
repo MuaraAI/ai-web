@@ -5,9 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getSupabase } from "@/lib/supabase";
 import { Logo } from "@/components/Logo";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
-const navLink = "text-label font-semibold uppercase text-muted transition-colors hover:text-ink";
+const navLink = "text-label font-semibold uppercase text-ash transition-colors hover:text-bone";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -35,13 +34,13 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-canvas/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full bg-void">
       <div className="container-page flex h-20 items-center justify-between gap-6">
         <Link href="/" className="flex items-center" aria-label="Muara AI, beranda">
           <Logo />
         </Link>
 
-        <nav aria-label="Utama" className="flex items-center gap-3 sm:gap-6 lg:gap-8">
+        <nav aria-label="Utama" className="flex items-center gap-8">
           <div className="hidden items-center gap-8 md:flex">
             {pathname !== "/" && (
               <Link href="/" className={navLink}>
@@ -63,18 +62,17 @@ export function Navbar() {
             <Link
               href="/dashboard"
               aria-current={pathname === "/dashboard" ? "page" : undefined}
-              className={pathname === "/dashboard" ? `${navLink} text-ink` : navLink}
+              className={pathname === "/dashboard" ? `${navLink} text-bone` : navLink}
             >
               Dashboard
             </Link>
           ) : (
             pathname !== "/login" && (
-              <Link href="/login" className="btn-primary min-h-[44px] px-4 sm:px-5">
+              <Link href="/login" className="btn-primary min-h-[44px] px-5">
                 Masuk
               </Link>
             )
           )}
-          <ThemeToggle />
         </nav>
       </div>
     </header>
