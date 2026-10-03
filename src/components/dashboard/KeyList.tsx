@@ -99,13 +99,7 @@ export function KeyList({ keys, loading, onRefresh }: KeyListProps) {
                     <span className="text-ash">••••••••</span>
                   </td>
                   <td className="py-6 pr-4.5">
-                    <span className="inline-flex items-center gap-2">
-                      <span
-                        className={`h-2 w-2 rounded-pill ${k.is_active ? "bg-verdant" : "border border-ash"}`}
-                        aria-hidden="true"
-                      />
-                      {k.is_active ? "Aktif" : "Dicabut"}
-                    </span>
+                    {k.is_active ? "Aktif" : "Dicabut"}
                   </td>
                   <td className="hidden py-6 pr-4.5 font-extralight sm:table-cell">
                     {new Date(k.created_at).toLocaleDateString("id-ID")}

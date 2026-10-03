@@ -6,6 +6,9 @@ import { Estuary } from "@/components/Estuary";
 import { FlowField } from "@/components/FlowField";
 import { JourneyRail } from "@/components/JourneyRail";
 import { Reveal } from "@/components/Reveal";
+import { TypeCycle } from "@/components/TypeCycle";
+
+const heroWords = ["ide", "riset", "karya", "kode"];
 import { CodeBlock } from "@/components/CodeBlock";
 
 const quickstartCode = `from openai import OpenAI
@@ -18,7 +21,8 @@ client = OpenAI(
 response = client.chat.completions.create(
     model="muara-v1-flash-high",
     messages=[
-        {"role": "user", "content": "Jelaskan arsitektur Transformer secara ringkas"}
+        {"role": "user",
+         "content": "Jelaskan arsitektur Transformer secara ringkas"}
     ],
     stream=True
 )
@@ -71,20 +75,23 @@ function ArrowUpRight() {
 export default function HomePage() {
   return (
     <div className="relative isolate flex min-h-screen flex-col">
-      {/* Scrolling carries the reader downstream: river at the hero, open sea at the footer. */}
-      <FlowField from={0} to={1} quietTop />
+      {/* Each section sets a scene on the way downstream: river → rapids → mouth → sea. */}
+      <FlowField fallback="hero" />
       <JourneyRail />
       <Navbar />
 
       <main className="flex-1 overflow-x-hidden">
         {/* Hero */}
-        <section className="container-page grid items-center gap-9 pb-24 pt-10 sm:pt-15 lg:grid-cols-2">
+        <section data-scene="hero" className="container-page grid items-center gap-9 pb-24 pt-10 sm:pt-15 lg:grid-cols-2">
           <div className="relative z-10 flex flex-col gap-7.5">
             <Reveal>
               <span className="eyebrow">Muara V1 Flash Gateway</span>
             </Reveal>
             <Reveal delay={80}>
-              <h1 className="text-display">Setiap aliran ide bermuara di sini.</h1>
+              <h1 className="text-display">
+                Setiap aliran <span className="sr-only">ide</span>
+                <TypeCycle words={heroWords} className="text-saffron" /> bermuara di sini.
+              </h1>
             </Reveal>
             <Reveal delay={160} className="flex flex-col gap-7.5">
               <p className="max-w-[480px] text-body font-extralight">
@@ -103,11 +110,11 @@ export default function HomePage() {
             </Reveal>
           </div>
 
-          <Estuary className="aspect-[5/4] w-full" />
+          <Estuary />
         </section>
 
         {/* Key figures */}
-        <section aria-label="Spesifikasi utama" className="container-page pb-30">
+        <section data-scene="river" aria-label="Spesifikasi utama" className="container-page pb-30">
           <dl className="grid grid-cols-2 gap-9 lg:grid-cols-4">
             {stats.map((s, i) => (
               <Reveal key={s.label} delay={i * 90} className="flex flex-col-reverse gap-1.5">
@@ -119,7 +126,7 @@ export default function HomePage() {
         </section>
 
         {/* Models */}
-        <section id="models" className="container-page grid items-start gap-15 pb-30 lg:grid-cols-2">
+        <section id="models" data-scene="river" className="container-page grid items-start gap-15 pb-30 lg:grid-cols-2">
           <Reveal className="flex flex-col gap-6">
             <span className="eyebrow">Model</span>
             <h2 className="text-heading-lg">Tiga tingkat penalaran. Satu endpoint.</h2>
@@ -147,7 +154,7 @@ export default function HomePage() {
         </section>
 
         {/* Rate limits — zigzag: data left, copy right */}
-        <section className="container-page grid items-start gap-15 pb-30 lg:grid-cols-2">
+        <section data-scene="rapids" className="container-page grid items-start gap-15 pb-30 lg:grid-cols-2">
           <Reveal className="flex flex-col gap-6 lg:order-2">
             <span className="eyebrow">Batas penggunaan</span>
             <h2 className="text-heading-lg">Kuota mengikuti peran Anda.</h2>
@@ -182,7 +189,7 @@ export default function HomePage() {
         </section>
 
         {/* Quickstart */}
-        <section id="quickstart" className="container-page grid items-center gap-15 pb-30 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+        <section id="quickstart" data-scene="mouth" className="container-page grid items-center gap-15 pb-30 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
           <Reveal className="flex flex-col gap-6">
             <span className="eyebrow">Quickstart</span>
             <h2 className="text-heading-lg">Langsung jalan di SDK OpenAI.</h2>
@@ -197,7 +204,7 @@ export default function HomePage() {
         </section>
 
         {/* Community */}
-        <section className="container-page pb-30 pt-15">
+        <section data-scene="sea" className="container-page pb-30 pt-15">
           <Reveal className="flex flex-col gap-7.5">
             <span className="eyebrow">Komunitas MuaraAI</span>
             <h2 className="max-w-[1000px] text-display">Dibangun mahasiswa, untuk mahasiswa.</h2>
