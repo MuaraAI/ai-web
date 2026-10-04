@@ -2,37 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getSupabase } from "@/lib/supabase";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navLink = "text-label font-semibold uppercase text-ash transition-colors hover:text-bone";
 
+const COMMUNITY_URL = "https://muaraai.com";
+
 export function Navbar() {
   const pathname = usePathname();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    try {
-      const supabase = getSupabase();
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setIsLoggedIn(Boolean(session?.user));
-      });
-
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event, session) => {
-        setIsLoggedIn(Boolean(session?.user));
-      });
-
-      return () => {
-        subscription.unsubscribe();
-      };
-    } catch {
-      // Env variables not yet present in some contexts
-    }
-  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-line bg-void/85 backdrop-blur-md">
@@ -64,20 +42,15 @@ export function Navbar() {
 
           <ThemeToggle />
 
-          {isLoggedIn ? (
-            <Link
-              href="/dashboard"
-              aria-current={pathname === "/dashboard" ? "page" : undefined}
-              className={pathname === "/dashboard" ? `${navLink} text-bone` : navLink}
+          {pathname !== "/" && (
+            <a
+              href={COMMUNITY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary min-h-[44px] px-5"
             >
-              Dashboard
-            </Link>
-          ) : (
-            pathname !== "/login" && (
-              <Link href="/login" className="btn-primary min-h-[44px] px-5">
-                Masuk
-              </Link>
-            )
+              Buat Kunci API
+            </a>
           )}
         </nav>
       </div>
