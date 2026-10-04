@@ -56,6 +56,64 @@ const roles = [
   { role: "Maintainer", note: "Pengurus inti & pengelola infrastruktur", perMinute: "80", perWindow: "1.200", highlight: true },
 ];
 
+const useCases = [
+  {
+    icon: "sync",
+    title: "Tugas & riset kuliah",
+    description:
+      "Ringkas paper, wawancara materi, dan susun draft laporan. Kuota Contributor 150 request per 5 jam cukup untuk satu pekan pengerjaan tugas.",
+  },
+  {
+    icon: "check",
+    title: "Coding & proyek tim",
+    description:
+      "Debug, refactor, dan audit kode lewat `muara-v1-flash-high`. Cocok untuk proyek divisional Builder dan Creative yang jalan tiap semester.",
+  },
+  {
+    icon: "arrow_forward",
+    title: "Bot & otomatisasi",
+    description:
+      "Format OpenAI API berarti bot Discord, assistant Telegram, dan skrip batch tinggal ganti base URL. Streaming SSE didukung penuh.",
+  },
+];
+
+const faqs = [
+  {
+    q: "Berapa biaya pemakaian gateway?",
+    a: "Nol. Gateway disediakan non-komersial untuk anggota komunitas MuaraAI dari FTI UBSI Pontianak. Kuota ditegakkan otomatis lewat penghitung request per peran, bukan pembayaran.",
+  },
+  {
+    q: "Bagaimana cara mendapatkan kunci API?",
+    a: "Masuk lewat akun komunitas di halaman login, lalu buat kunci di dashboard. Kunci berformat muara_ai_... dan bisa dicabut kapan pun dari daftar kunci.",
+  },
+  {
+    q: "Apakah percakapan saya disimpan?",
+    a: "Tidak. Prompt dan keluaran langsung di-stream tanpa dicatat. Sistem hanya menyimpan penghitung request untuk menegakkan kuota per peran.",
+  },
+  {
+    q: "Apa bedanya low, medium, dan high?",
+    a: "Ketiganya satu model yang sama dengan kedalaman penalaran berbeda. Low untuk latensi tercepat 2-3 detik, medium seimbang 4-5 detik, dan high tanpa batas kedalaman untuk logika rumit dan audit kode.",
+  },
+  {
+    q: "SDK atau framework apa saja yang didukung?",
+    a: "Semua yang bicara protokol OpenAI: pustaka resmi Python dan TypeScript, LangChain, Vercel AI SDK, OpenWebUI, sampai tooling CLI seperti aichat. Cukup arahkan base URL ke endpoint gateway.",
+  },
+];
+
+function FaqItem({ q, a }: { q: string; a: string }) {
+  return (
+    <details data-rise data-reveal className="group border-t border-line last:border-b">
+      <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 py-5 text-base font-normal text-bone transition-colors hover:text-saffron [&::-webkit-details-marker]:hidden">
+        {q}
+        <span className="material-symbols-rounded shrink-0 text-ash transition-transform duration-200 group-open:rotate-45" aria-hidden="true">
+          add
+        </span>
+      </summary>
+      <p className="max-w-[760px] pb-5 text-[15px] font-extralight leading-relaxed text-mist">{a}</p>
+    </details>
+  );
+}
+
 function ArrowUpRight() {
   return (
     <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -217,12 +275,61 @@ export default function HomePage() {
             </div>
           </section>
 
+          {/* Use cases */}
+          <section id="use-cases" data-section className="container-page relative pb-24">
+            <span data-node aria-hidden="true" className="thread-node absolute top-2 hidden h-[9px] w-[9px] rounded-pill border border-line-strong bg-void transition-[transform,background-color,border-color] duration-300 min-[1400px]:block" />
+            <div className="flex flex-col gap-5 pb-12 lg:flex-row lg:items-end lg:justify-between lg:gap-15">
+              <div className="flex flex-col gap-5">
+                <span className="eyebrow">03 · Untuk apa saja</span>
+                <h2 data-split data-reveal className="max-w-[640px] text-heading-sm">
+                  Satu gateway, tiga kebiasaan.
+                </h2>
+              </div>
+              <p className="max-w-[420px] text-base font-extralight leading-relaxed text-mist">
+                Dari tugas kuliah sampai bot produksi divisi. Semua lewat satu base URL dengan format yang sudah dikenal.
+              </p>
+            </div>
+
+            <div data-rise-group className="grid gap-px border border-line bg-line md:grid-cols-3">
+              {useCases.map((u) => (
+                <article key={u.title} data-rise data-reveal className="flex flex-col gap-3 bg-void p-6">
+                  <span className="material-symbols-rounded text-saffron" aria-hidden="true">
+                    {u.icon}
+                  </span>
+                  <h3 className="text-lg font-normal text-bone">{u.title}</h3>
+                  <p className="text-[15px] font-extralight leading-relaxed text-mist">{u.description}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section id="faq" data-section className="container-page relative pb-24">
+            <span data-node aria-hidden="true" className="thread-node absolute top-2 hidden h-[9px] w-[9px] rounded-pill border border-line-strong bg-void transition-[transform,background-color,border-color] duration-300 min-[1400px]:block" />
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-15">
+              <div className="flex flex-col gap-5">
+                <span className="eyebrow">04 · FAQ</span>
+                <h2 data-split data-reveal className="max-w-[480px] text-heading-sm">
+                  Yang paling sering ditanyakan.
+                </h2>
+                <p className="max-w-[420px] text-base font-extralight leading-relaxed text-mist">
+                  Belum ketemu jawabannya? Tanya langsung di kanal komunitas MuaraAI.
+                </p>
+              </div>
+              <div data-rise-group>
+                {faqs.map((f) => (
+                  <FaqItem key={f.q} q={f.q} a={f.a} />
+                ))}
+              </div>
+            </div>
+          </section>
+
           {/* Community */}
           <section data-section className="container-page relative pb-24">
             <span data-node aria-hidden="true" className="thread-node absolute top-2 hidden h-[9px] w-[9px] rounded-pill border border-line-strong bg-void transition-[transform,background-color,border-color] duration-300 min-[1400px]:block" />
             <div className="flex flex-col gap-6 border-t border-line pt-12 lg:flex-row lg:items-end lg:justify-between lg:gap-15">
               <div className="flex flex-col gap-5">
-                <span className="eyebrow">03 · Komunitas MuaraAI</span>
+                <span className="eyebrow">05 · Komunitas MuaraAI</span>
                 <h2 data-split data-reveal className="max-w-[760px] text-heading-lg">
                   Dibangun mahasiswa, untuk mahasiswa.
                 </h2>
