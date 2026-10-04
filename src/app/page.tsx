@@ -84,7 +84,7 @@ const faqs = [
   },
   {
     q: "Bagaimana cara mendapatkan kunci API?",
-    a: "Masuk lewat akun komunitas di halaman login, lalu buat kunci di dashboard. Kunci berformat muara_ai_... dan bisa dicabut kapan pun dari daftar kunci.",
+    a: "Masuk lewat portal komunitas di muaraai.com, lalu buat kunci dari menu gateway. Kunci berformat muara_ai_... dan bisa dicabut kapan pun.",
   },
   {
     q: "Apakah percakapan saya disimpan?",
@@ -167,9 +167,9 @@ export default function HomePage() {
             </p>
 
             <div data-hero-fade data-reveal className="flex flex-wrap items-center gap-x-7.5 gap-y-3">
-              <Link href="/login" className="btn-primary">
+              <a href="https://muaraai.com" target="_blank" rel="noopener noreferrer" className="btn-primary">
                 Buat Kunci API
-              </Link>
+              </a>
               <a href="https://github.com/MuaraAI" target="_blank" rel="noopener noreferrer" className="btn-ghost">
                 GitHub Org
                 <ArrowUpRight />
@@ -344,10 +344,6 @@ export default function HomePage() {
                   Portal Komunitas
                   <ArrowUpRight />
                 </a>
-                <Link href="/login" className="btn-ghost text-ash">
-                  Masuk sekarang
-                  <span className="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
-                </Link>
               </div>
             </div>
           </section>

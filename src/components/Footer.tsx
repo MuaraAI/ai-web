@@ -5,7 +5,7 @@ const productLinks = [
   { href: "/#models", label: "Model & Limit" },
   { href: "/#quickstart", label: "Quickstart" },
   { href: "/#faq", label: "FAQ" },
-  { href: "/login", label: "Masuk" },
+  { href: "https://muaraai.com", label: "Buat Kunci API" },
 ];
 
 const communityLinks = [
