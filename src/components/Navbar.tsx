@@ -54,6 +54,9 @@ export function Navbar() {
             <Link href="/#quickstart" className={navLink}>
               Quickstart
             </Link>
+            <Link href="/#faq" className={navLink}>
+              FAQ
+            </Link>
             <a href="https://github.com/MuaraAI" target="_blank" rel="noopener noreferrer" className={navLink}>
               GitHub
             </a>
