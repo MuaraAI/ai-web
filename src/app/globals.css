@@ -282,6 +282,6 @@ html[data-motion] [data-reveal] {
   }
 
   .code-block {
-    @apply overflow-x-auto rounded-card border border-line bg-void p-6 font-mono text-sm leading-[1.7] text-mist sm:p-[30px];
+    @apply overflow-x-auto rounded-card border border-line bg-void p-6 font-mono text-sm leading-[1.7] text-mist [overflow-wrap:anywhere] whitespace-pre-wrap sm:p-[30px];
   }
 }
