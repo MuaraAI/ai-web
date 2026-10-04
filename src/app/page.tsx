@@ -103,13 +103,13 @@ const faqs = [
 function FaqItem({ q, a }: { q: string; a: string }) {
   return (
     <details data-rise data-reveal className="group border-t border-line last:border-b">
-      <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 py-5 text-base font-normal text-bone transition-colors hover:text-saffron [&::-webkit-details-marker]:hidden">
+      <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-3 py-4 text-[15px] font-normal text-bone transition-colors hover:text-saffron sm:text-base [&::-webkit-details-marker]:hidden">
         {q}
         <span className="material-symbols-rounded shrink-0 text-ash transition-transform duration-200 group-open:rotate-45" aria-hidden="true">
           add
         </span>
       </summary>
-      <p className="max-w-[760px] pb-5 text-[15px] font-extralight leading-relaxed text-mist">{a}</p>
+      <p className="max-w-[760px] pb-4 text-[14px] font-extralight leading-relaxed text-mist sm:pb-5 sm:text-[15px]">{a}</p>
     </details>
   );
 }
@@ -290,13 +290,15 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div data-rise-group className="grid gap-px border border-line bg-line md:grid-cols-3">
+            <div data-rise-group className="grid gap-px border border-line bg-line sm:grid-cols-3">
               {useCases.map((u) => (
-                <article key={u.title} data-rise data-reveal className="flex flex-col gap-3 bg-void p-6">
-                  <span className="material-symbols-rounded text-saffron" aria-hidden="true">
-                    {u.icon}
-                  </span>
-                  <h3 className="text-lg font-normal text-bone">{u.title}</h3>
+                <article key={u.title} data-rise data-reveal className="flex flex-col gap-2 bg-void px-4.5 py-4 sm:gap-3 sm:p-6">
+                  <h3 className="flex items-center gap-2.5 text-base font-normal text-bone sm:text-lg">
+                    <span className="material-symbols-rounded shrink-0 text-saffron" aria-hidden="true">
+                      {u.icon}
+                    </span>
+                    {u.title}
+                  </h3>
                   <p className="text-[15px] font-extralight leading-relaxed text-mist">{u.description}</p>
                 </article>
               ))}
@@ -307,12 +309,12 @@ export default function HomePage() {
           <section id="faq" data-section className="container-page relative pb-24">
             <span data-node aria-hidden="true" className="thread-node absolute top-2 hidden h-[9px] w-[9px] rounded-pill border border-line-strong bg-void transition-[transform,background-color,border-color] duration-300 min-[1400px]:block" />
             <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-15">
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-4">
                 <span className="eyebrow">04 · FAQ</span>
                 <h2 data-split data-reveal className="max-w-[480px] text-heading-sm">
                   Yang paling sering ditanyakan.
                 </h2>
-                <p className="max-w-[420px] text-base font-extralight leading-relaxed text-mist">
+                <p className="max-w-[420px] text-[15px] font-extralight leading-relaxed text-mist">
                   Belum ketemu jawabannya? Tanya langsung di kanal komunitas MuaraAI.
                 </p>
               </div>
